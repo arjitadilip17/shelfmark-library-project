@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  eureka-server:
+    build: ./eureka-server
+    container_name: shelfmark-eureka
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - shelfmark-net
+
+  book-service:
+    build: ./book-service
+    container_name: shelfmark-book-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+    networks:
+      - shelfmark-net
+
+  member-service:
+    build: ./member-service
+    container_name: shelfmark-member-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+    networks:
+      - shelfmark-net
+
+  loan-service:
+    build: ./loan-service
+    container_name: shelfmark-loan-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - BOOK_SERVICE_URL=http://book-service:8081
+      - MEMBER_SERVICE_URL=http://member-service:8082
+    depends_on:
+      - eureka-server
+      - book-service
+      - member-service
+    networks:
+      - shelfmark-net
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: shelfmark-api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+      - book-service
+      - member-service
+      - loan-service
+    networks:
+      - shelfmark-net
+
+  frontend:
+    build: ./frontend-fullstack
+    container_name: shelfmark-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - shelfmark-net
+
+networks:
+  shelfmark-net:
+    driver: bridge

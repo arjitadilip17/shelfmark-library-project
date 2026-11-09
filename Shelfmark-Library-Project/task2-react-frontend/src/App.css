@@ -1,0 +1,824 @@
+/* =====================================================
+   Shelfmark Library - Online Library Management System
+   Task 1: Responsive Web Page Design using HTML5 & CSS3
+   Approach: mobile-first, then media queries at 600px and 900px
+   ===================================================== */
+
+/* ---------- 1. Design tokens (CSS custom properties) ---------- */
+:root {
+  --lamp:        #0f3b33;   /* deep banker's-lamp green */
+  --lamp-light:  #17503f;
+  --paper:       #f5f6f2;   /* cool off-white page */
+  --tint:        #e9ede8;   /* alternate section background */
+  --card:        #ffffff;
+  --ink:         #14211e;
+  --muted:       #52605b;
+  --line:        #d3d8d1;
+  --brass:       #e3be6a;   /* bright brass for buttons on dark */
+  --brass-deep:  #8a6412;   /* readable brass for text on light */
+
+  /* book cover colours */
+  --navy:    #1f3a5f;
+  --oxblood: #7a2432;
+  --mustard: #d9a441;
+  --teal:    #23736e;
+  --plum:    #56366a;
+  --slate:   #465563;
+
+  --font-head: "Bricolage Grotesque", "Trebuchet MS", Arial, sans-serif;
+  --font-body: "Literata", Georgia, "Times New Roman", serif;
+
+  --wrap: 1120px;
+}
+
+/* ---------- 2. Reset and base ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+img, svg { max-width: 100%; height: auto; }
+
+h1, h2, h3 {
+  font-family: var(--font-head);
+  line-height: 1.15;
+  margin: 0 0 0.6rem;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: clamp(2.2rem, 6vw, 3.7rem); font-weight: 800; letter-spacing: -0.025em; }
+h2 { font-size: clamp(1.6rem, 3.5vw, 2.3rem); font-weight: 800; }
+h3 { font-size: 1.1rem; font-weight: 600; }
+
+p { margin: 0 0 1rem; max-width: 65ch; }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--brass-deep);
+  outline-offset: 3px;
+}
+
+/* ---------- 3. Utilities ---------- */
+.wrap {
+  width: min(100% - 2.5rem, var(--wrap));
+  margin-inline: auto;
+}
+.wrap.narrow { width: min(100% - 2.5rem, 760px); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem; top: -4rem;
+  background: var(--brass);
+  color: var(--ink);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  z-index: 100;
+  font-family: var(--font-head);
+  font-weight: 600;
+}
+.skip-link:focus { top: 1rem; }
+
+/* ---------- 4. Buttons ---------- */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.4rem;
+  border: 2px solid var(--lamp);
+  border-radius: 8px;
+  background: var(--lamp);
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+.btn:hover { background: var(--lamp-light); border-color: var(--lamp-light); }
+
+.btn-brass { background: var(--brass); border-color: var(--brass); color: var(--ink); }
+.btn-brass:hover { background: #ecc978; border-color: #ecc978; }
+
+.btn-outline { background: transparent; color: var(--lamp); }
+.btn-outline:hover { background: var(--lamp); color: #fff; }
+
+.btn-small { padding: 0.45rem 1rem; font-size: 0.92rem; }
+
+/* ---------- 5. Header and mobile-first navigation ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--lamp);
+  color: #fff;
+}
+
+.bar {
+  width: min(100% - 2.5rem, var(--wrap));
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 4rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-head);
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* small logo: three little books drawn with box-shadow */
+.brand-mark {
+  width: 8px; height: 22px;
+  background: var(--brass);
+  border-radius: 1px;
+  box-shadow: 11px 4px 0 #c9d8d3, 22px 0 0 var(--brass);
+  margin-right: 24px;
+}
+
+/* hamburger button (label for the hidden checkbox) */
+.nav-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0.6rem;
+  cursor: pointer;
+}
+.nav-toggle span {
+  display: block;
+  width: 26px; height: 3px;
+  background: #fff;
+  border-radius: 2px;
+}
+#nav-toggle:focus-visible + .nav-toggle {
+  outline: 3px solid var(--brass);
+  outline-offset: 2px;
+}
+
+/* nav is hidden on mobile until the checkbox is ticked */
+.site-nav { display: none; width: 100%; padding-bottom: 1rem; }
+#nav-toggle:checked ~ .site-nav { display: block; }
+
+.site-nav ul { list-style: none; margin: 0; padding: 0; }
+.site-nav a {
+  display: block;
+  padding: 0.7rem 0.2rem;
+  text-decoration: none;
+  font-family: var(--font-head);
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+.site-nav a:hover { color: var(--brass); }
+
+.site-nav .nav-cta {
+  margin-top: 0.8rem;
+  background: var(--brass);
+  color: var(--ink);
+  text-align: center;
+  border-radius: 8px;
+  border-bottom: 0;
+}
+.site-nav .nav-cta:hover { color: var(--ink); background: #ecc978; }
+
+/* ---------- 6. Hero ---------- */
+.hero {
+  background: var(--lamp);
+  color: #fff;
+  padding: 2.5rem 0 0;
+  overflow: hidden;
+}
+
+.hero-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.hero .lead {
+  font-size: 1.1rem;
+  color: #d6e2de;
+}
+
+/* search form inside the hero */
+.search {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+}
+.search label { color: #fff; }
+
+/* CSS-only bookshelf */
+.hero-art { align-self: end; }
+
+.shelf {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  padding: 0 1rem;
+  border-bottom: 14px solid var(--brass);
+  border-radius: 2px;
+  min-height: 120px;
+  overflow: hidden;
+}
+
+.spine {
+  display: block;
+  width: var(--w);
+  height: var(--h);
+  border-radius: 3px 3px 0 0;
+  background-color: var(--navy);
+  /* two thin bands across each spine, like printed labels */
+  background-image:
+    linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.35)),
+    linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.35));
+  background-size: 100% 4px, 100% 4px;
+  background-position: 0 18%, 0 26%;
+  background-repeat: no-repeat;
+}
+/* one book has fallen against its neighbour */
+.spine.lean {
+  rotate: -14deg;
+  transform-origin: bottom right;
+  margin-left: 14px;
+}
+
+.hide-sm { display: none; }
+
+/* colour helpers shared by spines and covers */
+.c-navy    { background-color: var(--navy); }
+.c-oxblood { background-color: var(--oxblood); }
+.c-mustard { background-color: var(--mustard); }
+.c-teal    { background-color: var(--teal); }
+.c-plum    { background-color: var(--plum); }
+.c-slate   { background-color: var(--slate); }
+
+/* ---------- 7. Forms (shared) ---------- */
+.field { display: flex; flex-direction: column; gap: 0.3rem; }
+
+label { font-family: var(--font-head); font-weight: 600; font-size: 0.95rem; }
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="search"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+}
+input:focus,
+select:focus {
+  border-color: var(--brass-deep);
+  outline: 3px solid rgba(138, 100, 18, 0.3);
+  outline-offset: 0;
+}
+/* HTML5 validation feedback appears only after the user has typed */
+input:user-invalid,
+select:user-invalid { border-color: #b3261e; }
+
+/* ---------- 8. Sections ---------- */
+.section { padding: 3.5rem 0; }
+.section-tint { background: var(--tint); }
+.section-head { margin-bottom: 2rem; }
+.section-head p { color: var(--muted); margin-bottom: 0; }
+
+/* ---------- 9. Book catalogue (CSS Grid) ---------- */
+.book-grid {
+  display: grid;
+  gap: 1.5rem;
+  /* columns are created automatically: as many 210px+ columns as fit */
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+
+.book {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cover {
+  aspect-ratio: 3 / 4;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.1rem 1rem 1.1rem 1.6rem;
+  border-radius: 3px 10px 10px 3px;
+  color: #fff;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1.15;
+  /* dark strip along the left edge imitates the book's spine */
+  box-shadow: inset 12px 0 0 rgba(0, 0, 0, 0.22), 0 8px 14px -8px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+.cover::before {
+  content: "";
+  position: absolute;
+  left: 1.6rem; right: 1rem; top: 1.2rem;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.55);
+}
+.cover.dark-text { color: var(--ink); }
+.cover.dark-text::before { background: rgba(0, 0, 0, 0.4); }
+
+.info h3 { margin-bottom: 0.15rem; }
+.info p { margin-bottom: 0.3rem; font-size: 0.95rem; }
+.author { color: var(--muted); }
+.callno { color: var(--muted); font-size: 0.85rem; }
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-family: var(--font-head);
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: 0.4rem 0 0.8rem;
+}
+.badge.in  { background: #d7ecdf; color: #14532d; }
+.badge.out { background: #f6dcd8; color: #7f1d1d; }
+
+/* ---------- 10. Categories (Flexbox wrap) ---------- */
+.category-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+.category-list li { flex: 1 1 240px; }
+.category-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  /* the green fill grows from the left on hover */
+  background: linear-gradient(var(--lamp), var(--lamp)) no-repeat left center / 0% 100% var(--card);
+  border: 1px solid var(--line);
+  border-left: 8px solid var(--lamp);
+  border-radius: 4px 12px 12px 4px;
+  text-decoration: none;
+  transition: background-size 0.35s ease, color 0.35s ease;
+}
+.category-list a:hover,
+.category-list a:focus-visible { background-size: 100% 100%; color: #fff; }
+.category-list a:hover span,
+.category-list a:focus-visible span { color: var(--brass); }
+.category-list strong { font-family: var(--font-head); font-weight: 600; }
+.category-list span { color: var(--muted); font-size: 0.9rem; white-space: nowrap; }
+
+/* ---------- 11. Steps (ordered list with CSS counters) ---------- */
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: step;
+  display: grid;
+  gap: 1.5rem;
+}
+.steps li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 4rem;
+}
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 0;
+  width: 2.8rem; height: 2.8rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--lamp);
+  color: var(--brass);
+  font-family: var(--font-head);
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+.steps p { color: var(--muted); }
+
+/* ---------- 12. Membership table ---------- */
+.table-wrap {
+  overflow-x: auto;              /* scrolls sideways on tiny screens */
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+table { width: 100%; min-width: 520px; border-collapse: collapse; }
+th, td { padding: 0.9rem 1.1rem; text-align: left; border-bottom: 1px solid var(--line); }
+thead th {
+  background: var(--lamp);
+  color: #fff;
+  font-family: var(--font-head);
+  font-weight: 600;
+}
+tbody th { font-family: var(--font-head); font-weight: 600; }
+tbody tr:last-child th,
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) { background: #f7f9f6; }
+
+/* ---------- 13. Accordion (details / summary) ---------- */
+details {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-bottom: 0.8rem;
+}
+summary {
+  padding: 1rem 1.2rem;
+  font-family: var(--font-head);
+  font-weight: 600;
+  cursor: pointer;
+}
+details[open] summary { border-bottom: 1px solid var(--line); }
+details p { padding: 1rem 1.2rem 0; margin: 0 0 1rem; }
+
+/* ---------- 14. Join form ---------- */
+.join { background: var(--lamp); color: #fff; }
+.join-grid { display: grid; gap: 2rem; }
+.join-intro p { color: #d6e2de; }
+
+.join-form {
+  display: grid;
+  gap: 1.1rem;
+  padding: 1.5rem;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 14px;
+}
+.field-row { display: grid; gap: 1.1rem; }
+
+fieldset {
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 0.8rem 1rem 1rem;
+  margin: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+legend { font-family: var(--font-head); font-weight: 600; padding: 0 0.4rem; }
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+.check input { width: 1.15rem; height: 1.15rem; margin-top: 0.3rem; accent-color: var(--lamp); }
+
+/* ---------- 15. Footer ---------- */
+.site-footer { background: #0a2a24; color: #cfdcd8; padding: 2.5rem 0 1rem; }
+.footer-grid { display: grid; gap: 1.5rem; }
+.footer-brand { font-family: var(--font-head); font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 0.4rem; }
+.site-footer address { font-style: normal; }
+.site-footer p { margin-bottom: 0.5rem; }
+.site-footer a { color: var(--brass); }
+.copyright {
+  width: min(100% - 2.5rem, var(--wrap));
+  margin: 2rem auto 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.9rem;
+}
+
+/* ---------- 14a. Extra effects (pure CSS, inspired by animated UI kits) ---------- */
+
+/* Effect 1: spines drop onto the shelf one after another (runs once on page load) */
+@keyframes drop-in {
+  from { transform: translateY(-140%); opacity: 0; }
+  to   { transform: translateY(0);      opacity: 1; }
+}
+.spine {
+  animation: drop-in 0.7s cubic-bezier(0.3, 1.35, 0.5, 1) both;
+  animation-delay: calc(var(--i, 0) * 110ms);
+}
+
+/* Effect 2: scrolling subject strip (marquee). Two identical lists slide left in a loop. */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  background: var(--brass);
+  color: var(--ink);
+  border-block: 3px solid var(--brass-deep);
+}
+.marquee-track {
+  display: flex;
+  flex-shrink: 0;
+  min-width: 100%;
+  justify-content: space-around;
+  margin: 0;
+  padding: 0.85rem 0;
+  list-style: none;
+  animation: marquee-slide 32s linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-track li {
+  display: flex;
+  align-items: center;
+  padding: 0 1.4rem;
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+/* each subject is separated by a tiny book spine */
+.marquee-track li::before {
+  content: "";
+  width: 7px; height: 20px;
+  margin-right: 1.4rem;
+  background: var(--lamp);
+  border-radius: 1px;
+}
+@keyframes marquee-slide {
+  to { transform: translateX(-100%); }
+}
+
+/* Effect 3: book covers tilt open like a book being pulled off the shelf */
+.cover {
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.45s;
+  transform-origin: left center;
+}
+/* paper edge visible on the right side of the cover */
+.cover::after {
+  content: "";
+  position: absolute;
+  right: -5px; top: 5px; bottom: 5px;
+  width: 5px;
+  background: repeating-linear-gradient(#fff 0 2px, #cfd3cc 2px 3px);
+  border-radius: 0 3px 3px 0;
+}
+.book:hover .cover,
+.book:focus-within .cover {
+  transform: perspective(900px) rotateY(-20deg) translateY(-6px);
+  box-shadow: inset 12px 0 0 rgba(0, 0, 0, 0.22), 14px 18px 20px -10px rgba(0, 0, 0, 0.55);
+}
+
+/* Respect users who turn off animation in their system settings */
+@media (prefers-reduced-motion: reduce) {
+  .spine { animation: none; }
+  .marquee-track { animation: none; flex-wrap: wrap; }
+  .marquee-track[aria-hidden="true"] { display: none; }
+  .cover, .category-list a { transition: none; }
+  .book:hover .cover, .book:focus-within .cover { transform: none; }
+}
+
+/* =====================================================
+   MEDIA QUERIES (mobile-first: styles above are for phones)
+   ===================================================== */
+
+/* ---------- Tablets: 600px and up ---------- */
+@media (min-width: 600px) {
+  .search { grid-template-columns: 1fr 1fr; align-items: end; }
+  .search .btn { grid-column: 1 / -1; }
+
+  .steps { grid-template-columns: repeat(2, 1fr); }
+  .field-row { grid-template-columns: 1fr 1fr; }
+  fieldset { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: repeat(2, 1fr); }
+  .hide-sm { display: block; }
+}
+
+/* ---------- Laptops and desktops: 900px and up ---------- */
+@media (min-width: 900px) {
+  /* navigation becomes a horizontal row; hamburger disappears */
+  .nav-toggle { display: none; }
+
+  .site-nav { display: block; width: auto; padding-bottom: 0; }
+  .site-nav ul { display: flex; align-items: center; gap: 1.6rem; }
+  .site-nav a { padding: 0.4rem 0; border-bottom: 2px solid transparent; }
+  .site-nav a:hover { border-bottom-color: var(--brass); color: #fff; }
+  .site-nav .nav-cta { margin-top: 0; padding: 0.55rem 1.1rem; border-bottom: 0; }
+  .site-nav .nav-cta:hover { border-bottom: 0; }
+
+  .hero { padding-top: 4rem; }
+  .hero-grid { grid-template-columns: 1.15fr 1fr; align-items: end; gap: 3rem; }
+  .hero-text { padding-bottom: 4rem; }
+  .shelf { min-height: 260px; }
+
+  .section { padding: 5rem 0; }
+
+  .steps { grid-template-columns: repeat(4, 1fr); }
+  .steps li { padding-left: 0; padding-top: 3.8rem; }
+
+  .join-grid { grid-template-columns: 1fr 1.3fr; align-items: start; gap: 4rem; }
+  .footer-grid { grid-template-columns: 2fr 1.2fr 1fr; }
+}
+
+/* ---------- Print: hide navigation and forms ---------- */
+@media print {
+  .site-header, .search, .join, .skip-link { display: none; }
+  body { background: #fff; }
+}
+
+/* ---------- 16. Added for the React app (Task 2) ---------- */
+
+/* React toggles .open on the nav itself via state, instead of a checkbox hack */
+.site-nav { display: none; width: 100%; padding-bottom: 1rem; }
+.site-nav.open { display: block; }
+@media (min-width: 900px) {
+  .site-nav { display: block; width: auto; padding-bottom: 0; }
+}
+
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.btn:disabled:hover { background: var(--lamp); }
+
+.badge.borrowed { background: #fde8c8; color: #7a4a08; }
+
+.field-error {
+  color: #b3261e;
+  font-size: 0.85rem;
+  margin: 0.2rem 0 0;
+}
+
+.empty-state {
+  color: var(--muted);
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.loan-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.8rem;
+}
+.loan-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+}
+.loan-list li div { display: flex; flex-direction: column; }
+.loan-list li span { color: var(--muted); font-size: 0.9rem; }
+
+.offline-banner {
+  background: #fde8c8;
+  color: #7a4a08;
+  border: 1px solid #e3be6a;
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  font-size: 0.92rem;
+  margin: 1.5rem 0 0;
+}
+.offline-banner code {
+  background: rgba(0, 0, 0, 0.08);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
+
+/* ---- Enhanced UI elements for Task 2 & 4 ---- */
+.member-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  width: fit-content;
+  border: 1px solid var(--line, #e2ded5);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+.member-label {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--muted, #666);
+}
+.member-select {
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  color: var(--ink, #1e242b);
+  cursor: pointer;
+  font-size: 0.92rem;
+  outline: none;
+}
+.nav-member-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--brass-tint, #f4ecd8);
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--navy, #1c2e42);
+}
+.chip-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--navy, #1c2e42);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.nav-counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--brass, #c49a45);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  padding: 0.1rem 0.45rem;
+  margin-left: 0.35rem;
+  font-weight: 700;
+}
+.toast-notification {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: #1c2e42;
+  color: #fff;
+  padding: 0.85rem 1.4rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border-left: 4px solid var(--brass, #c49a45);
+}
+.toast-notification.error {
+  border-left-color: #c93b2b;
+}
+@keyframes slideInToast {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.field-error-banner {
+  background: #fde2e0;
+  color: #9c1c11;
+  border: 1px solid #f3a8a2;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+  font-size: 0.92rem;
+}
+.register-success-card {
+  background: #f5f9f4;
+  border: 1px solid #cce2cc;
+  padding: 1.5rem;
+  border-radius: 12px;
+}

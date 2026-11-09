@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS members (
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name       VARCHAR(150) NOT NULL,
+    email      VARCHAR(150) NOT NULL UNIQUE,
+    phone      VARCHAR(15)  NOT NULL,
+    plan       VARCHAR(20)  NOT NULL,
+    joined_on  DATE NOT NULL DEFAULT CURRENT_DATE
+);

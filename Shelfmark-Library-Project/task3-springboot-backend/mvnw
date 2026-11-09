@@ -1,0 +1,15 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# Maven Startup Script
+# ----------------------------------------------------------------------------
+set -e
+if command -v mvn >/dev/null 2>&1; then
+  exec mvn "$@"
+fi
+
+if [ -n "$M2_HOME" ] && [ -x "$M2_HOME/bin/mvn" ]; then
+  exec "$M2_HOME/bin/mvn" "$@"
+fi
+
+echo "Maven wrapper: 'mvn' command not found on PATH. Please install Apache Maven or open in an IDE." >&2
+exit 1

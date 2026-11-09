@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Shelfmark Library: search the catalogue, check availability, and join the library online.">
+  <title>Shelfmark Library | Online Library Management System</title>
+
+  <!-- Fonts: Bricolage Grotesque for headings, Literata for reading text. Georgia is the offline fallback. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📚%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ============ HEADER + NAVIGATION ============ -->
+  <header class="site-header">
+    <div class="bar">
+      <a class="brand" href="#top" aria-label="Shelfmark Library home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        Shelfmark Library
+      </a>
+
+      <!-- CSS-only mobile menu: the hidden checkbox stores open/closed state -->
+      <input type="checkbox" id="nav-toggle" class="visually-hidden" aria-label="Toggle navigation menu">
+      <label for="nav-toggle" class="nav-toggle" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </label>
+
+      <nav class="site-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="#top">Home</a></li>
+          <li><a href="#catalogue">Catalogue</a></li>
+          <li><a href="#borrowing">How it works</a></li>
+          <li><a href="#membership">Membership</a></li>
+          <li><a href="#rules">Rules</a></li>
+          <li><a class="nav-cta" href="#join">Join the library</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div class="hero-text">
+          <h1>Search the shelves from wherever you are</h1>
+          <p class="lead">Browse the catalogue, see which copies are on the shelf, and reserve a book before you walk in. Renew your loans online, too.</p>
+
+          <!-- HTML5 form controls: search input, select, required attribute -->
+          <form class="search" action="#catalogue" method="get" role="search">
+            <div class="field">
+              <label for="q">Title, author or ISBN</label>
+              <input type="search" id="q" name="q" placeholder="For example, Clean Code" required>
+            </div>
+            <div class="field">
+              <label for="category">Category</label>
+              <select id="category" name="category">
+                <option value="all">All categories</option>
+                <option>Computer Science</option>
+                <option>Science and Technology</option>
+                <option>History and Biography</option>
+                <option>Literature</option>
+                <option>Competitive Exams</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-brass">Search catalogue</button>
+          </form>
+        </div>
+
+        <!-- Decorative bookshelf drawn only with CSS -->
+        <div class="hero-art" aria-hidden="true">
+          <div class="shelf">
+            <span class="spine c-navy"   style="--i:1;--h:210px;--w:40px"></span>
+            <span class="spine c-mustard" style="--i:2;--h:175px;--w:32px"></span>
+            <span class="spine c-oxblood" style="--i:3;--h:230px;--w:46px"></span>
+            <span class="spine c-teal"   style="--i:4;--h:190px;--w:34px"></span>
+            <span class="spine c-plum"   style="--i:5;--h:215px;--w:38px"></span>
+            <span class="spine c-slate hide-sm" style="--i:6;--h:165px;--w:30px"></span>
+            <span class="spine c-mustard lean hide-sm" style="--i:7;--h:200px;--w:36px"></span>
+            <span class="spine c-navy hide-sm" style="--i:8;--h:180px;--w:44px"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SUBJECT STRIP (CSS-only scrolling marquee) ============ -->
+    <div class="marquee" aria-label="Subjects available in the library">
+      <ul class="marquee-track">
+        <li>Computer Science</li>
+        <li>Science and Technology</li>
+        <li>History and Biography</li>
+        <li>Literature</li>
+        <li>Competitive Exams</li>
+        <li>Children's Corner</li>
+        <li>Tamil Classics</li>
+        <li>Reference and Journals</li>
+      </ul>
+      <ul class="marquee-track" aria-hidden="true">
+        <li>Computer Science</li>
+        <li>Science and Technology</li>
+        <li>History and Biography</li>
+        <li>Literature</li>
+        <li>Competitive Exams</li>
+        <li>Children's Corner</li>
+        <li>Tamil Classics</li>
+        <li>Reference and Journals</li>
+      </ul>
+    </div>
+
+    <!-- ============ CATALOGUE ============ -->
+    <section class="section" id="catalogue">
+      <div class="wrap">
+        <header class="section-head">
+          <h2>Popular this month</h2>
+          <p>Titles members borrowed most. Copy counts update each morning.</p>
+        </header>
+
+        <div class="book-grid">
+
+          <article class="book">
+            <div class="cover c-navy" aria-hidden="true"><span>Clean Code</span></div>
+            <div class="info">
+              <h3>Clean Code</h3>
+              <p class="author">Robert C. Martin</p>
+              <p class="callno">Call no. 005.1 MAR</p>
+              <p class="badge in">3 copies available</p>
+              <a class="btn btn-small" href="#join">Borrow this book</a>
+            </div>
+          </article>
+
+          <article class="book">
+            <div class="cover c-oxblood" aria-hidden="true"><span>Introduction to Algorithms</span></div>
+            <div class="info">
+              <h3>Introduction to Algorithms</h3>
+              <p class="author">Thomas H. Cormen and others</p>
+              <p class="callno">Call no. 005.1 COR</p>
+              <p class="badge out">All copies issued</p>
+              <a class="btn btn-small btn-outline" href="#join">Reserve a copy</a>
+            </div>
+          </article>
+
+          <article class="book">
+            <div class="cover c-teal" aria-hidden="true"><span>Database System Concepts</span></div>
+            <div class="info">
+              <h3>Database System Concepts</h3>
+              <p class="author">Silberschatz, Korth, Sudarshan</p>
+              <p class="callno">Call no. 005.74 SIL</p>
+              <p class="badge in">5 copies available</p>
+              <a class="btn btn-small" href="#join">Borrow this book</a>
+            </div>
+          </article>
+
+          <article class="book">
+            <div class="cover c-mustard dark-text" aria-hidden="true"><span>Wings of Fire</span></div>
+            <div class="info">
+              <h3>Wings of Fire</h3>
+              <p class="author">A. P. J. Abdul Kalam</p>
+              <p class="callno">Call no. 920 KAL</p>
+              <p class="badge in">2 copies available</p>
+              <a class="btn btn-small" href="#join">Borrow this book</a>
+            </div>
+          </article>
+
+          <article class="book">
+            <div class="cover c-plum" aria-hidden="true"><span>The Discovery of India</span></div>
+            <div class="info">
+              <h3>The Discovery of India</h3>
+              <p class="author">Jawaharlal Nehru</p>
+              <p class="callno">Call no. 954 NEH</p>
+              <p class="badge out">All copies issued</p>
+              <a class="btn btn-small btn-outline" href="#join">Reserve a copy</a>
+            </div>
+          </article>
+
+          <article class="book">
+            <div class="cover c-slate" aria-hidden="true"><span>Head First Java</span></div>
+            <div class="info">
+              <h3>Head First Java</h3>
+              <p class="author">Kathy Sierra and Bert Bates</p>
+              <p class="callno">Call no. 005.13 SIE</p>
+              <p class="badge in">4 copies available</p>
+              <a class="btn btn-small" href="#join">Borrow this book</a>
+            </div>
+          </article>
+
+          <article class="book">
+            <div class="cover c-navy" aria-hidden="true"><span>Artificial Intelligence: A Modern Approach</span></div>
+            <div class="info">
+              <h3>Artificial Intelligence: A Modern Approach</h3>
+              <p class="author">Stuart Russell and Peter Norvig</p>
+              <p class="callno">Call no. 006.3 RUS</p>
+              <p class="badge in">1 copy available</p>
+              <a class="btn btn-small" href="#join">Borrow this book</a>
+            </div>
+          </article>
+
+          <article class="book">
+            <div class="cover c-oxblood" aria-hidden="true"><span>Malgudi Days</span></div>
+            <div class="info">
+              <h3>Malgudi Days</h3>
+              <p class="author">R. K. Narayan</p>
+              <p class="callno">Call no. 823 NAR</p>
+              <p class="badge in">6 copies available</p>
+              <a class="btn btn-small" href="#join">Borrow this book</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CATEGORIES ============ -->
+    <section class="section section-tint" id="categories">
+      <div class="wrap">
+        <header class="section-head">
+          <h2>Browse by subject</h2>
+          <p>Every shelf in the building has a matching category online.</p>
+        </header>
+
+        <ul class="category-list">
+          <li><a href="#catalogue"><strong>Computer Science</strong><span>1,240 titles</span></a></li>
+          <li><a href="#catalogue"><strong>Science and Technology</strong><span>2,105 titles</span></a></li>
+          <li><a href="#catalogue"><strong>History and Biography</strong><span>1,380 titles</span></a></li>
+          <li><a href="#catalogue"><strong>Literature</strong><span>3,760 titles</span></a></li>
+          <li><a href="#catalogue"><strong>Competitive Exams</strong><span>860 titles</span></a></li>
+          <li><a href="#catalogue"><strong>Children's Corner</strong><span>1,020 titles</span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ HOW BORROWING WORKS (a real sequence, so an ordered list) ============ -->
+    <section class="section" id="borrowing">
+      <div class="wrap">
+        <header class="section-head">
+          <h2>How borrowing works</h2>
+          <p>Four steps from search to shelf.</p>
+        </header>
+
+        <ol class="steps">
+          <li>
+            <h3>Join the library</h3>
+            <p>Fill in the registration form. Your membership card is ready at the desk the same day.</p>
+          </li>
+          <li>
+            <h3>Find your book</h3>
+            <p>Search by title, author or ISBN. Note the call number shown on the book.</p>
+          </li>
+          <li>
+            <h3>Borrow or reserve</h3>
+            <p>Pick up available copies at the desk. If all copies are issued, reserve one and we will message you.</p>
+          </li>
+          <li>
+            <h3>Return or renew</h3>
+            <p>Return the book by the due date, or renew it online if nobody is waiting.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ MEMBERSHIP TABLE ============ -->
+    <section class="section section-tint" id="membership">
+      <div class="wrap">
+        <header class="section-head">
+          <h2>Membership plans</h2>
+          <p>Choose the plan that matches how you read.</p>
+        </header>
+
+        <!-- The wrapper scrolls sideways on very small screens so the table never breaks the layout -->
+        <div class="table-wrap" role="region" aria-label="Membership plans table" tabindex="0">
+          <table>
+            <caption class="visually-hidden">Comparison of student, faculty and public membership plans</caption>
+            <thead>
+              <tr>
+                <th scope="col">Feature</th>
+                <th scope="col">Student</th>
+                <th scope="col">Faculty</th>
+                <th scope="col">Public</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Yearly fee</th>
+                <td>Rs. 200</td>
+                <td>Free</td>
+                <td>Rs. 600</td>
+              </tr>
+              <tr>
+                <th scope="row">Books at a time</th>
+                <td>3</td>
+                <td>8</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <th scope="row">Loan period</th>
+                <td>14 days</td>
+                <td>30 days</td>
+                <td>10 days</td>
+              </tr>
+              <tr>
+                <th scope="row">Online renewals</th>
+                <td>2</td>
+                <td>3</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <th scope="row">E-book access</th>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td>No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RULES (native HTML5 accordion, no JavaScript) ============ -->
+    <section class="section" id="rules">
+      <div class="wrap narrow">
+        <header class="section-head">
+          <h2>Library rules and hours</h2>
+        </header>
+
+        <details open>
+          <summary>Opening hours</summary>
+          <p>Monday to Friday, 9:00 am to 7:00 pm. Saturday, 9:00 am to 2:00 pm. Closed on Sundays and public holidays.</p>
+        </details>
+        <details>
+          <summary>Late returns</summary>
+          <p>A fine of Rs. 2 per day applies after the due date. Fines above Rs. 100 pause your borrowing until they are paid.</p>
+        </details>
+        <details>
+          <summary>Lost or damaged books</summary>
+          <p>Tell the desk as soon as it happens. You pay the current price of the book, or replace it with the same edition.</p>
+        </details>
+        <details>
+          <summary>Reference books</summary>
+          <p>Encyclopaedias, journals and rare books are for reading inside the library only.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ JOIN FORM ============ -->
+    <section class="section join" id="join">
+      <div class="wrap join-grid">
+        <div class="join-intro">
+          <h2>Join Shelfmark Library</h2>
+          <p>Register in two minutes. Bring a photo ID to the desk to collect your card.</p>
+        </div>
+
+        <form class="join-form" action="#join" method="post">
+          <div class="field">
+            <label for="name">Full name</label>
+            <input type="text" id="name" name="name" autocomplete="name" required>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="phone">Mobile number</label>
+              <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" inputmode="numeric" placeholder="10 digits" autocomplete="tel" required>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="plan">Membership plan</label>
+              <select id="plan" name="plan" required>
+                <option value="" disabled selected>Choose a plan</option>
+                <option value="student">Student</option>
+                <option value="faculty">Faculty</option>
+                <option value="public">Public</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="dob">Date of birth</label>
+              <input type="date" id="dob" name="dob" required>
+            </div>
+          </div>
+
+          <fieldset>
+            <legend>Subjects you read most</legend>
+            <label class="check"><input type="checkbox" name="interest" value="cs"> Computer Science</label>
+            <label class="check"><input type="checkbox" name="interest" value="sci"> Science</label>
+            <label class="check"><input type="checkbox" name="interest" value="lit"> Literature</label>
+            <label class="check"><input type="checkbox" name="interest" value="his"> History</label>
+          </fieldset>
+
+          <label class="check">
+            <input type="checkbox" name="terms" required>
+            I have read the library rules and agree to follow them.
+          </label>
+
+          <button type="submit" class="btn btn-brass">Create my membership</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div>
+        <p class="footer-brand">Shelfmark Library</p>
+        <p>An online library management system for members, students and staff.</p>
+      </div>
+      <address>
+        <p><strong>Visit us</strong></p>
+        <p>Central Library Block<br>Main Road, Tiruchirappalli<br>Tamil Nadu 620 001</p>
+      </address>
+      <div>
+        <p><strong>Contact</strong></p>
+        <p><a href="mailto:desk@shelfmark.example">desk@shelfmark.example</a><br>
+           <a href="tel:+910000000000">+91 00000 00000</a></p>
+      </div>
+    </div>
+    <p class="copyright">&copy; 2026 Shelfmark Library. Built with HTML5 and CSS3.</p>
+  </footer>
+
+</body>
+</html>

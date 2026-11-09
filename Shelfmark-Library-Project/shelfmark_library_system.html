@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shelfmark Library | Online Library Management System</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap');
+
+    :root {
+      --navy: #090e17;
+      --navy-card: #0f172a;
+      --gold: #d4af37;
+      --gold-light: #f3e5ab;
+      --gold-dark: #aa820a;
+      --brass: #c59b27;
+      --emerald-glow: #10b981;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      overflow-x: hidden;
+    }
+
+    .font-serif-title {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .font-brand {
+      font-family: 'Cinzel', serif;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* 3D Realistic Book Spines */
+    .book-spine {
+      height: var(--h, 205px);
+      width: var(--w, 38px);
+      border-radius: 4px 7px 7px 4px;
+      box-shadow: inset -4px 0 8px rgba(0,0,0,0.4), inset 2px 0 4px rgba(255,255,255,0.15), 4px 8px 16px rgba(0,0,0,0.3);
+      transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+    }
+    .book-spine::after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 3px;
+      right: 3px;
+      height: 2px;
+      background: rgba(255, 215, 0, 0.4);
+      box-shadow: 0 4px 0 rgba(255, 215, 0, 0.4), 0 180px 0 rgba(255, 215, 0, 0.4), 0 184px 0 rgba(255, 215, 0, 0.4);
+    }
+    .book-spine:hover {
+      transform: translateY(-16px) scale(1.06);
+      box-shadow: inset -4px 0 10px rgba(0,0,0,0.5), 0 20px 30px rgba(0,0,0,0.35);
+      z-index: 20;
+    }
+    .book-spine.lean-right {
+      transform: rotate(9deg) translateY(-4px);
+    }
+    .book-spine.lean-right:hover {
+      transform: rotate(0deg) translateY(-18px) scale(1.06);
+    }
+
+    /* Marquee animation */
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      display: flex;
+      width: 200%;
+      animation: marquee 28s linear infinite;
+    }
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    /* Active filter pill */
+    .filter-pill.active {
+      background-color: #0f172a;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+    }
+
+    /* Shimmer effect */
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .gold-shimmer {
+      background: linear-gradient(90deg, #d4af37 0%, #fff2b2 50%, #d4af37 100%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 5s infinite linear;
+    }
+
+    /* Pulse subtle */
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.94; transform: scale(1.01); }
+    }
+    .animate-pulse-subtle {
+      animation: pulse-subtle 3s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+
+  <!-- ================= LUXURY HEADER & NAVIGATION ================= -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-slate-200/80 shadow-sm transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Brand Logo & Identity -->
+        <a href="#top" class="flex items-center gap-3.5 group">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-600 via-amber-700 to-slate-950 flex items-center justify-center text-white text-2xl shadow-lg shadow-amber-900/20 group-hover:scale-105 transition-transform duration-300">
+            📚
+          </div>
+          <div>
+            <span class="font-brand text-2xl font-black text-slate-950 tracking-wider flex items-center gap-1.5">
+              Shelfmark <span class="text-amber-600 font-extrabold">Library</span>
+            </span>
+            <p class="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Central Academic & Digital Archive</p>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Bar -->
+        <nav class="hidden xl:flex items-center gap-6 text-xs font-bold tracking-wide uppercase text-slate-600" aria-label="Main Navigation">
+          <a href="#catalogue" class="hover:text-amber-700 transition-colors py-2">Catalogue</a>
+          <a href="#loans" class="hover:text-amber-700 transition-colors py-2">Active Loans</a>
+          <a href="#study-pods" class="hover:text-amber-700 transition-colors py-2 flex items-center gap-1">
+            <span>🪑</span> Study Pods
+          </a>
+          <a href="#membership" class="hover:text-amber-700 transition-colors py-2">Plans</a>
+          <a href="#rules" class="hover:text-amber-700 transition-colors py-2">Rules</a>
+        </nav>
+
+        <!-- Right Side: Wishlist, Cart, ID Card, User Switcher -->
+        <div class="flex items-center gap-2.5">
+          
+          <!-- Saved Wishlist Drawer Toggle -->
+          <button id="btn-open-wishlist" class="flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200 px-3 py-2 rounded-xl text-xs font-bold transition-all shadow-sm" title="Saved Reading List">
+            <span>❤️</span>
+            <span class="hidden md:inline">Saved</span>
+            <span id="badge-wishlist-count" class="bg-rose-600 text-white rounded-full px-1.5 py-0.2 text-[10px] font-black">0</span>
+          </button>
+
+          <!-- Loans Cart Button -->
+          <a href="#loans" class="flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300/80 px-3 py-2 rounded-xl text-xs font-bold transition-all shadow-sm">
+            <span>📖</span>
+            <span class="hidden sm:inline">My Loans</span>
+            <span id="badge-loans-count" class="bg-amber-700 text-white rounded-full px-2 py-0.5 text-[11px] font-black">1</span>
+          </a>
+
+          <!-- Digital Library Card Trigger -->
+          <button id="btn-open-idcard" class="hidden sm:flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold transition-all" title="View Digital Library Card">
+            <span>🪪</span>
+            <span class="hidden md:inline">ID Pass</span>
+          </button>
+
+          <!-- Active User Session Switcher Pill -->
+          <div class="flex items-center gap-2 bg-slate-950 text-white px-3 py-2 rounded-xl text-xs shadow-md border border-slate-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <select id="select-active-member" class="bg-transparent text-white font-bold text-xs outline-none cursor-pointer pr-1" aria-label="Active Member Profile">
+              <option value="1" class="text-slate-900 font-normal">Manoj (Student #1)</option>
+              <option value="2" class="text-slate-900 font-normal">Divya (Student #2)</option>
+            </select>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SUB-HEADER MARQUEE TICKER ================= -->
+  <div class="bg-slate-950 text-slate-300 overflow-hidden py-2 text-xs font-medium border-b border-slate-800">
+    <div class="marquee-track flex gap-8 whitespace-nowrap">
+      <span class="flex items-center gap-1.5"><span class="text-amber-400">◆</span> Computer Science & System Algorithms</span>
+      <span class="flex items-center gap-1.5"><span class="text-amber-400">◆</span> Artificial Intelligence & Robotics</span>
+      <span class="flex items-center gap-1.5"><span class="text-amber-400">◆</span> Modern History & Autobiographies</span>
+      <span class="flex items-center gap-1.5"><span class="text-amber-400">◆</span> World Literature & Indian Classics</span>
+      <span class="flex items-center gap-1.5"><span class="text-amber-400">◆</span> Quiet Reading Pods & Group Study Rooms</span>
+      <span class="flex items-center gap-1.5"><span class="text-amber-400">◆</span> Peer-Reviewed Research Journals</span>
+      <span class="flex items-center gap-1.5"><span class="text-amber-400">◆</span> Computer Science & System Algorithms</span>
+      <span class="flex items-center gap-1.5"><span class="text-amber-400">◆</span> Artificial Intelligence & Robotics</span>
+      <span class="flex items-center gap-1.5"><span class="text-amber-400">◆</span> Modern History & Autobiographies</span>
+      <span class="flex items-center gap-1.5"><span class="text-amber-400">◆</span> World Literature & Indian Classics</span>
+      <span class="flex items-center gap-1.5"><span class="text-amber-400">◆</span> Quiet Reading Pods & Group Study Rooms</span>
+      <span class="flex items-center gap-1.5"><span class="text-amber-400">◆</span> Peer-Reviewed Research Journals</span>
+    </div>
+  </div>
+
+  <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2.5 pointer-events-none" aria-live="polite"></div>
+
+  <!-- ================= MAIN UNIFIED CONTENT ================= -->
+  <main class="flex-grow">
+
+    <!-- ================= 1. HERO SECTION WITH 3D BOOKSHELF ================= -->
+    <section id="top" class="relative bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white pt-16 pb-20 px-4 overflow-hidden border-b border-slate-800">
+      
+      <!-- Subtle Luxury Ambient Glow -->
+      <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+        
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-300 text-xs font-bold tracking-wide">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            Real-Time Digital Library Catalog & Instant Checkout
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif-title font-bold tracking-tight text-white leading-[1.1]">
+            Search the Shelves, <br>
+            <span class="gold-shimmer italic font-normal">
+              Borrow in Seconds.
+            </span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-300 max-w-2xl font-normal leading-relaxed">
+            Welcome to Shelfmark Library. Explore our curated academic collections, preview interactive chapters, reserve study pods, and manage renewals seamlessly.
+          </p>
+
+          <!-- Search Bar & Category Controls -->
+          <div class="bg-white/10 backdrop-blur-xl p-3.5 rounded-3xl border border-white/15 shadow-2xl space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+              <div class="sm:col-span-7 relative">
+                <span class="absolute left-3.5 top-3 text-slate-400">🔍</span>
+                <input
+                  id="input-search-query"
+                  type="search"
+                  placeholder="Search by title, author, or ISBN (e.g. Clean Code)..."
+                  class="w-full pl-10 pr-4 py-2.5 bg-white text-slate-900 placeholder-slate-400 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-inner"
+                >
+              </div>
+              <div class="sm:col-span-5">
+                <select
+                  id="select-category"
+                  class="w-full px-3.5 py-2.5 bg-white text-slate-800 rounded-2xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500"
+                >
+                  <option value="All categories">All Categories</option>
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Science and Technology">Science and Technology</option>
+                  <option value="History and Biography">History and Biography</option>
+                  <option value="Literature">Literature</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Quick Filter Chips -->
+            <div class="flex flex-wrap items-center gap-1.5 pt-1 text-xs">
+              <span class="text-slate-400 font-semibold mr-1.5">Quick Filters:</span>
+              <button class="chip-filter px-3 py-1 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-white font-medium filter-pill active" data-cat="All categories">All</button>
+              <button class="chip-filter px-3 py-1 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-slate-200 font-medium filter-pill" data-cat="Computer Science">Computer Science</button>
+              <button class="chip-filter px-3 py-1 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-slate-200 font-medium filter-pill" data-cat="History and Biography">History & Biography</button>
+              <button class="chip-filter px-3 py-1 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-slate-200 font-medium filter-pill" data-cat="Literature">Literature</button>
+            </div>
+          </div>
+
+          <!-- Live Metrics Gauges -->
+          <div class="grid grid-cols-3 gap-4 pt-1 max-w-lg">
+            <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl shadow-sm">
+              <p class="text-2xl sm:text-3xl font-black text-amber-400 font-brand" id="stat-total-books">8</p>
+              <p class="text-[11px] text-slate-400 uppercase tracking-wider font-bold mt-0.5">Catalog Titles</p>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl shadow-sm">
+              <p class="text-2xl sm:text-3xl font-black text-emerald-400 font-brand" id="stat-available-copies">21</p>
+              <p class="text-[11px] text-slate-400 uppercase tracking-wider font-bold mt-0.5">Available Copies</p>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl shadow-sm">
+              <p class="text-2xl sm:text-3xl font-black text-sky-400 font-brand" id="stat-active-loans">1</p>
+              <p class="text-[11px] text-slate-400 uppercase tracking-wider font-bold mt-0.5">Active Loans</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Interactive Bookshelf Card -->
+        <div class="lg:col-span-5 flex flex-col items-center">
+          <div class="bg-gradient-to-b from-slate-900/90 to-slate-950 p-8 rounded-3xl border border-slate-800 shadow-2xl relative w-full max-w-md">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+              <div>
+                <h2 class="text-xs font-bold text-amber-400 uppercase tracking-widest font-brand">Interactive Reserve Shelf</h2>
+                <p class="text-xs text-slate-400">Click any book to pull details & sample</p>
+              </div>
+              <span class="text-[11px] font-mono px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                3D Rack
+              </span>
+            </div>
+
+            <!-- 3D Wooden Shelf Display -->
+            <div class="h-64 flex items-end justify-center gap-2.5 px-4 pb-2 border-b-[10px] border-amber-950 rounded-b-md bg-slate-950/60 relative">
+              <div class="book-spine bg-sky-950 border-l border-sky-600" style="--h: 215px; --w: 36px;" title="Clean Code" data-book-id="1">
+                <span class="text-[9px] text-amber-200 font-bold rotate-90 block whitespace-nowrap mt-12 tracking-wide font-mono">Clean Code</span>
+              </div>
+              <div class="book-spine bg-rose-950 border-l border-rose-600" style="--h: 235px; --w: 42px;" title="Introduction to Algorithms" data-book-id="2">
+                <span class="text-[9px] text-amber-200 font-bold rotate-90 block whitespace-nowrap mt-14 tracking-wide font-mono">Algorithms</span>
+              </div>
+              <div class="book-spine bg-teal-950 border-l border-teal-600" style="--h: 198px; --w: 34px;" title="Database System Concepts" data-book-id="3">
+                <span class="text-[9px] text-amber-200 font-bold rotate-90 block whitespace-nowrap mt-10 tracking-wide font-mono">Database</span>
+              </div>
+              <div class="book-spine bg-amber-900 border-l border-amber-600 lean-right" style="--h: 205px; --w: 34px;" title="Wings of Fire" data-book-id="4">
+                <span class="text-[9px] text-amber-100 font-bold rotate-90 block whitespace-nowrap mt-12 tracking-wide font-mono">Wings of Fire</span>
+              </div>
+              <div class="book-spine bg-purple-950 border-l border-purple-600" style="--h: 220px; --w: 38px;" title="The Discovery of India" data-book-id="5">
+                <span class="text-[9px] text-amber-200 font-bold rotate-90 block whitespace-nowrap mt-12 tracking-wide font-mono">Discovery India</span>
+              </div>
+              <div class="book-spine bg-emerald-950 border-l border-emerald-600" style="--h: 190px; --w: 32px;" title="Head First Java" data-book-id="6">
+                <span class="text-[9px] text-amber-200 font-bold rotate-90 block whitespace-nowrap mt-8 tracking-wide font-mono">Java 17</span>
+              </div>
+            </div>
+
+            <p class="text-[11px] text-center text-slate-400 mt-4 font-medium">
+              Hover over volumes to lift them from the shelf. Click to preview inside.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 2. LIVE CATALOGUE SECTION ================= -->
+    <section id="catalogue" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-8 border-b border-slate-200">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">
+            Digital Shelves
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-serif-title font-bold text-slate-900 tracking-tight mt-1">
+            Browse the Collection
+          </h2>
+          <p id="catalogue-count-label" class="text-sm text-slate-500 mt-0.5">Showing 8 books across all subjects</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button id="btn-open-suggest-modal" class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5">
+            <span>💡</span> Suggest a Book
+          </button>
+
+          <span class="text-xs text-slate-500 font-bold uppercase tracking-wider ml-1">Sort by:</span>
+          <select id="select-sort" class="text-xs font-bold bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-700 outline-none focus:ring-2 focus:ring-amber-500 shadow-sm cursor-pointer">
+            <option value="id">Acquisition ID</option>
+            <option value="title">Title (A to Z)</option>
+            <option value="copies">Copies Available (High to Low)</option>
+            <option value="rating">Reader Rating (Highest)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Book Cards Grid -->
+      <div id="books-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-8">
+        <!-- Populated dynamically via JS -->
+      </div>
+
+      <!-- Empty Filter State -->
+      <div id="empty-catalogue-state" class="hidden text-center py-16 bg-white rounded-3xl border border-dashed border-slate-300 my-8">
+        <span class="text-4xl block mb-2">🔍</span>
+        <h3 class="text-lg font-bold text-slate-800">No books found</h3>
+        <p class="text-sm text-slate-500 max-w-sm mx-auto mt-1">No titles matched your query. Try resetting your search filters.</p>
+        <button id="btn-reset-filters" class="mt-4 px-5 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl hover:bg-slate-800 shadow-sm">
+          Reset All Filters
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ================= 3. ACTIVE LOANS & RENEWALS DESK ================= -->
+    <section id="loans" class="bg-amber-50/60 border-y border-amber-200/60 py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <div>
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-900 uppercase tracking-wider">
+              <span>📑</span> Circulation Desk
+            </div>
+            <h2 class="text-3xl font-serif-title font-bold text-slate-900 mt-1">Currently Borrowed Books</h2>
+            <p class="text-sm text-slate-600 mt-0.5">
+              Active account: <strong id="active-member-display" class="text-amber-900 font-bold">Manoj (Student #1)</strong>
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button id="btn-open-fine-calc" class="px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 rounded-xl text-xs font-bold shadow-sm transition-all flex items-center gap-1.5">
+              <span>🧮</span> Late Fee Estimator
+            </button>
+            <button id="btn-open-register-modal" class="px-5 py-2.5 bg-slate-950 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center gap-2">
+              <span>➕</span> Register New Member
+            </button>
+          </div>
+        </div>
+
+        <!-- Loans Cards Container -->
+        <div id="loans-list-container" class="space-y-3.5">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Empty Loans State -->
+        <div id="empty-loans-state" class="bg-white rounded-3xl p-8 border border-amber-200/80 text-center shadow-sm">
+          <span class="text-4xl block mb-2">✨</span>
+          <p class="font-bold text-slate-800 text-base">No active loans under this account</p>
+          <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+            Select any book with available copies from the catalogue above and click <strong>"Borrow This Book"</strong> to test immediate state updates.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 4. INTERACTIVE STUDY ROOM & POD RESERVATION ================= -->
+    <section id="study-pods" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-slate-200">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+        <div>
+          <span class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-800 border border-indigo-200 uppercase tracking-wider">
+            Reading Room Facilities
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-serif-title font-bold text-slate-900 mt-2">
+            Reserve a Quiet Study Pod
+          </h2>
+          <p class="text-sm text-slate-600 mt-1">
+            Book soundproof individual carrels or collaborative team tables in the Central Library Block.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 bg-slate-100 px-3.5 py-2 rounded-xl">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Available
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-500 ml-2"></span> Your Booking
+          <span class="w-2.5 h-2.5 rounded-full bg-slate-400 ml-2"></span> Occupied
+        </div>
+      </div>
+
+      <div id="study-pods-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- ================= 5. HOW BORROWING WORKS ================= -->
+    <section id="borrowing" class="bg-slate-100/70 border-b border-slate-200/80 py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 uppercase tracking-wider">
+            Simple 4-Step Process
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-serif-title font-bold text-slate-900 mt-2">
+            How Borrowing Works
+          </h2>
+          <p class="text-sm text-slate-600 mt-1">
+            From online reservation to doorstep study, circulation is designed to be frictionless.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition-shadow">
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-brand font-black text-lg flex items-center justify-center">
+              1
+            </div>
+            <h3 class="font-bold text-base text-slate-900">Join the Library</h3>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Complete the quick registration form to receive your digital library membership ID and pass immediately.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition-shadow">
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-brand font-black text-lg flex items-center justify-center">
+              2
+            </div>
+            <h3 class="font-bold text-base text-slate-900">Search & Preview</h3>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Filter by subject, read interactive chapter previews, or save favorites to your personal reading list.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition-shadow">
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-brand font-black text-lg flex items-center justify-center">
+              3
+            </div>
+            <h3 class="font-bold text-base text-slate-900">Borrow or Waitlist</h3>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Click "Borrow" on available titles, or join the priority hold queue if all copies are currently checked out.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition-shadow">
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-brand font-black text-lg flex items-center justify-center">
+              4
+            </div>
+            <h3 class="font-bold text-base text-slate-900">Renew or Return</h3>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Extend your due date by +7 days with 1-click online renewal, or return volumes anytime to free up your quota.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 6. MEMBERSHIP PLANS ================= -->
+    <section id="membership" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 uppercase tracking-wider">
+          Membership Tiers
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-serif-title font-bold text-slate-900 mt-2">
+          Membership Plans Comparison
+        </h2>
+        <p class="text-sm text-slate-600 mt-1">
+          Choose the plan tailored to your study, teaching, or personal reading habits.
+        </p>
+      </div>
+
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-950 text-white font-bold border-b border-slate-800">
+                <th class="p-4 sm:p-5 font-serif-title">Plan Feature</th>
+                <th class="p-4 sm:p-5 text-amber-400 font-bold">Student Tier</th>
+                <th class="p-4 sm:p-5">Faculty Tier</th>
+                <th class="p-4 sm:p-5">Public Reader</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-4 sm:p-5 font-semibold text-slate-900">Yearly Fee</td>
+                <td class="p-4 sm:p-5 text-amber-800 font-bold">Rs. 200</td>
+                <td class="p-4 sm:p-5 text-emerald-700 font-bold">Free (Academic)</td>
+                <td class="p-4 sm:p-5">Rs. 600</td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-4 sm:p-5 font-semibold text-slate-900">Books at a Time</td>
+                <td class="p-4 sm:p-5 text-amber-800 font-bold">3 Books</td>
+                <td class="p-4 sm:p-5 font-bold">8 Books</td>
+                <td class="p-4 sm:p-5">2 Books</td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-4 sm:p-5 font-semibold text-slate-900">Loan Period</td>
+                <td class="p-4 sm:p-5 text-amber-800 font-bold">14 Days</td>
+                <td class="p-4 sm:p-5">30 Days</td>
+                <td class="p-4 sm:p-5">10 Days</td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-4 sm:p-5 font-semibold text-slate-900">Online Renewals (+7 Days)</td>
+                <td class="p-4 sm:p-5 text-amber-800 font-bold">2 Renewals</td>
+                <td class="p-4 sm:p-5">3 Renewals</td>
+                <td class="p-4 sm:p-5">1 Renewal</td>
+              </tr>
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-4 sm:p-5 font-semibold text-slate-900">Study Pod Reservations</td>
+                <td class="p-4 sm:p-5 text-amber-800 font-bold">Included</td>
+                <td class="p-4 sm:p-5 text-emerald-700 font-bold">Priority Access</td>
+                <td class="p-4 sm:p-5 text-slate-400">Reading Hall Only</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 7. LIBRARY POLICIES & HOURS ================= -->
+    <section id="rules" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-slate-200">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 uppercase tracking-wider">
+          Library Policies
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-serif-title font-bold text-slate-900 mt-2">
+          Rules & Operating Hours
+        </h2>
+        <p class="text-sm text-slate-600 mt-1">
+          Clear, accessible guidelines for circulation, renewal, and library conduct.
+        </p>
+      </div>
+
+      <div class="max-w-3xl mx-auto space-y-3.5">
+        <details class="group bg-white p-5 rounded-3xl border border-slate-200 open:bg-amber-50/50 open:border-amber-300 transition-all cursor-pointer shadow-sm" open>
+          <summary class="font-bold text-sm text-slate-800 list-none flex justify-between items-center">
+            <span>Operating Hours & Reading Room Schedule</span>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
+            Monday through Friday: 9:00 AM – 7:00 PM. Saturday: 9:00 AM – 2:00 PM. Closed on Sundays and official statutory government holidays.
+          </p>
+        </details>
+
+        <details class="group bg-white p-5 rounded-3xl border border-slate-200 open:bg-amber-50/50 open:border-amber-300 transition-all cursor-pointer shadow-sm">
+          <summary class="font-bold text-sm text-slate-800 list-none flex justify-between items-center">
+            <span>Overdue Policies & Fine Calculation</span>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
+            An overdue charge of Rs. 2.00 per day is automatically computed for each volume kept past the due date. Accounts with accumulated fines exceeding Rs. 100 will temporarily pause new checkout privileges.
+          </p>
+        </details>
+
+        <details class="group bg-white p-5 rounded-3xl border border-slate-200 open:bg-amber-50/50 open:border-amber-300 transition-all cursor-pointer shadow-sm">
+          <summary class="font-bold text-sm text-slate-800 list-none flex justify-between items-center">
+            <span>Care of Volumes & Replacement Terms</span>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
+            Borrowers are responsible for returning items in clean condition. If a volume is damaged or lost, the borrower may provide an identical edition or pay the publisher replacement value.
+          </p>
+        </details>
+
+        <details class="group bg-white p-5 rounded-3xl border border-slate-200 open:bg-amber-50/50 open:border-amber-300 transition-all cursor-pointer shadow-sm">
+          <summary class="font-bold text-sm text-slate-800 list-none flex justify-between items-center">
+            <span>Non-Circulating Reference Collections</span>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
+            Encyclopaedias, historical manuscripts, current issues of print journals, and competitive exam question banks are strictly reserved for in-library reading room consultation.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ================= 8. INSTANT MEMBERSHIP REGISTRATION ================= -->
+    <section id="join" class="bg-gradient-to-b from-slate-100 to-white py-16 border-t border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <div class="lg:col-span-5 space-y-4">
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 uppercase tracking-wider">
+              Instant Membership
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-serif-title font-bold text-slate-900">
+              Join Shelfmark Library
+            </h2>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Register in seconds to activate your digital library card. Borrow up to 3 books under the Student plan with 14-day loan terms and online renewal privileges.
+            </p>
+            
+            <div class="space-y-3 pt-2">
+              <div class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold">✓</span>
+                <div>
+                  <p class="text-xs font-bold text-slate-800">Instant Digital Pass</p>
+                  <p class="text-xs text-slate-500">Immediate membership ID generation and digital barcode card.</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold">✓</span>
+                <div>
+                  <p class="text-xs font-bold text-slate-800">Study Pod & E-Book Access</p>
+                  <p class="text-xs text-slate-500">Reserve quiet study rooms and preview digital chapters online.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xl">
+            <form id="form-register-inline" class="space-y-4">
+              <div>
+                <label for="reg-name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Full Name *</label>
+                <input
+                  id="reg-name"
+                  type="text"
+                  placeholder="e.g. Senthil Kumar"
+                  class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                  required
+                >
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="reg-email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email Address *</label>
+                  <input
+                    id="reg-email"
+                    type="email"
+                    placeholder="senthil@example.com"
+                    class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                    required
+                  >
+                </div>
+                <div>
+                  <label for="reg-phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Mobile (10 digits) *</label>
+                  <input
+                    id="reg-phone"
+                    type="tel"
+                    placeholder="9876543210"
+                    class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                    required
+                  >
+                </div>
+              </div>
+
+              <div>
+                <label for="reg-plan" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Membership Plan *</label>
+                <select
+                  id="reg-plan"
+                  class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none bg-white font-medium"
+                >
+                  <option value="Student">Student (3 books, 14 days loan, Free renewal)</option>
+                  <option value="Faculty">Faculty (8 books, 30 days loan, Priority hold)</option>
+                  <option value="Public">Public (2 books, 10 days loan)</option>
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                class="w-full py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-bold rounded-2xl text-sm shadow-md transition-all"
+              >
+                Create Membership Account
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= 1. BOOK DETAIL & "LOOK INSIDE" PREVIEW MODAL ================= -->
+  <div id="modal-book-detail" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-slate-200 relative max-h-[90vh] overflow-y-auto">
+      <button id="btn-close-modal" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">
+        ✕
+      </button>
+
+      <div class="flex items-start gap-4">
+        <span id="modal-cover-badge" class="w-16 h-20 rounded-2xl bg-amber-700 text-white flex items-center justify-center text-2xl font-bold shadow-md shrink-0">
+          📖
+        </span>
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="modal-category" class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+              Category
+            </span>
+            <span id="modal-rating" class="text-xs font-bold text-amber-500">★ 4.9</span>
+          </div>
+          <h3 id="modal-title" class="text-xl sm:text-2xl font-serif-title font-bold text-slate-900 leading-tight mt-1">Book Title</h3>
+          <p id="modal-author" class="text-xs text-slate-500 font-semibold mt-0.5">Author Name</p>
+        </div>
+      </div>
+
+      <!-- Synopsis & Chapter Excerpt Preview -->
+      <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">📖 Look Inside — Chapter 1 Excerpt</span>
+          <span id="modal-pages" class="text-[10px] font-mono text-slate-500">464 Pages</span>
+        </div>
+        <p id="modal-excerpt" class="text-xs text-slate-700 italic leading-relaxed font-serif">
+          "Sample chapter text preview..."
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 text-xs text-slate-600 border-y border-slate-100 py-3">
+        <div><strong>Dewey Call No:</strong> <span id="modal-callno" class="font-mono text-slate-900 font-bold">000.00</span></div>
+        <div><strong>Shelf Location:</strong> <span id="modal-shelf" class="text-slate-900 font-semibold">2nd Floor, Bay A</span></div>
+        <div><strong>Status:</strong> <span id="modal-copies" class="font-bold text-emerald-700">0 available</span></div>
+        <div><strong>Loan Period:</strong> 14 Days (+7d renewable)</div>
+      </div>
+
+      <div class="flex items-center justify-between gap-3 pt-1">
+        <button id="btn-modal-wishlist" class="px-4 py-2.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition-all flex items-center gap-1.5">
+          <span>❤️</span> <span id="modal-wishlist-label">Save to List</span>
+        </button>
+
+        <div class="flex items-center gap-2.5">
+          <button id="btn-modal-close-action" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition-colors">
+            Close
+          </button>
+          <button id="btn-modal-borrow-action" class="px-6 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold shadow-md transition-all">
+            Borrow This Book
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 2. SAVED READING LIST / WISHLIST DRAWER MODAL ================= -->
+  <div id="modal-wishlist" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-slate-200 relative max-h-[85vh] flex flex-col">
+      <button id="btn-close-wishlist" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">
+        ✕
+      </button>
+
+      <div>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
+          Personal Bookmarks
+        </span>
+        <h3 class="text-2xl font-serif-title font-bold text-slate-900 mt-1">Saved Reading List</h3>
+        <p class="text-xs text-slate-500">Books you have bookmarked to read or borrow next</p>
+      </div>
+
+      <div id="wishlist-items-container" class="space-y-3 overflow-y-auto pr-1 flex-grow">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 3. DIGITAL LIBRARY ID CARD PASS MODAL ================= -->
+  <div id="modal-idcard" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-gradient-to-br from-slate-900 via-slate-950 to-amber-950 text-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-amber-500/30 relative overflow-hidden">
+      <button id="btn-close-idcard" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold">
+        ✕
+      </button>
+
+      <!-- Card Header -->
+      <div class="flex items-center justify-between border-b border-white/15 pb-4">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">📚</span>
+          <div>
+            <h4 class="font-brand text-base font-bold text-amber-400 tracking-wider">SHELFMARK LIBRARY</h4>
+            <p class="text-[10px] text-slate-400 uppercase tracking-widest">Official Digital Patron Pass</p>
+          </div>
+        </div>
+        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+          ACTIVE
+        </span>
+      </div>
+
+      <!-- Member Details -->
+      <div class="flex items-center gap-4">
+        <div id="idcard-avatar" class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-2xl font-black text-slate-950 shadow-lg">
+          M
+        </div>
+        <div class="space-y-1">
+          <h3 id="idcard-name" class="text-xl font-bold text-white">Manoj</h3>
+          <p id="idcard-plan" class="text-xs text-amber-300 font-semibold">Student Membership Tier</p>
+          <p id="idcard-email" class="text-[11px] text-slate-400 font-mono">manoj@example.com</p>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-3 gap-2.5 bg-white/5 p-3.5 rounded-2xl border border-white/10 text-center">
+        <div>
+          <p class="text-[10px] text-slate-400 uppercase">Member ID</p>
+          <p id="idcard-number" class="text-sm font-mono font-bold text-white mt-0.5">LIB-2026-001</p>
+        </div>
+        <div>
+          <p class="text-[10px] text-slate-400 uppercase">Active Loans</p>
+          <p id="idcard-loans" class="text-sm font-mono font-bold text-amber-400 mt-0.5">1 / 3</p>
+        </div>
+        <div>
+          <p class="text-[10px] text-slate-400 uppercase">Standing</p>
+          <p class="text-sm font-bold text-emerald-400 mt-0.5">Rs. 0 Fine</p>
+        </div>
+      </div>
+
+      <!-- Simulated Barcode Strip -->
+      <div class="bg-white p-3 rounded-2xl text-center space-y-1">
+        <div class="h-8 w-full bg-[repeating-linear-gradient(90deg,#0f172a,#0f172a_2px,transparent_2px,transparent_5px,#0f172a_5px,#0f172a_9px,transparent_9px,transparent_11px)]"></div>
+        <p id="idcard-barcode-text" class="text-[10px] font-mono text-slate-600 tracking-widest">*SHLF-2026-MEM-001*</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 4. LATE FEE ESTIMATOR MODAL ================= -->
+  <div id="modal-fine-calc" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-slate-200 relative">
+      <button id="btn-close-fine-calc" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">
+        ✕
+      </button>
+
+      <div>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+          Circulation Utility
+        </span>
+        <h3 class="text-xl font-serif-title font-bold text-slate-900 mt-1">Overdue Fine Estimator</h3>
+        <p class="text-xs text-slate-500">Calculate late return charges at Rs. 2.00 per book per overdue day</p>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label for="calc-books" class="block text-xs font-bold text-slate-700 uppercase mb-1">Number of Overdue Books: <span id="calc-books-val" class="text-amber-700">1</span></label>
+          <input id="calc-books" type="range" min="1" max="8" value="1" class="w-full accent-amber-700 cursor-pointer">
+        </div>
+
+        <div>
+          <label for="calc-days" class="block text-xs font-bold text-slate-700 uppercase mb-1">Days Past Due Date: <span id="calc-days-val" class="text-amber-700">5 Days</span></label>
+          <input id="calc-days" type="range" min="0" max="60" value="5" class="w-full accent-amber-700 cursor-pointer">
+        </div>
+
+        <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-amber-950">Estimated Late Fee</p>
+            <p id="calc-status-note" class="text-[11px] text-amber-800">Account remains in good standing</p>
+          </div>
+          <p id="calc-total-fine" class="text-2xl font-black text-amber-900 font-brand">Rs. 10.00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 5. SUGGEST A BOOK ACQUISITION MODAL ================= -->
+  <div id="modal-suggest" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-4 shadow-2xl border border-slate-200 relative">
+      <button id="btn-close-suggest" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">
+        ✕
+      </button>
+
+      <div>
+        <h3 class="text-xl font-serif-title font-bold text-slate-900">Suggest a New Book</h3>
+        <p class="text-xs text-slate-500 mt-0.5">Add a title directly to the Shelfmark Library catalogue</p>
+      </div>
+
+      <form id="form-suggest-book" class="space-y-3">
+        <div>
+          <label for="sug-title" class="block text-xs font-bold text-slate-700 uppercase mb-1">Book Title *</label>
+          <input id="sug-title" type="text" placeholder="e.g. Designing Data-Intensive Applications" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none" required>
+        </div>
+        <div>
+          <label for="sug-author" class="block text-xs font-bold text-slate-700 uppercase mb-1">Author *</label>
+          <input id="sug-author" type="text" placeholder="e.g. Martin Kleppmann" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none" required>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="sug-category" class="block text-xs font-bold text-slate-700 uppercase mb-1">Subject</label>
+            <select id="sug-category" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none bg-white">
+              <option value="Computer Science">Computer Science</option>
+              <option value="Science and Technology">Science and Technology</option>
+              <option value="History and Biography">History and Biography</option>
+              <option value="Literature">Literature</option>
+            </select>
+          </div>
+          <div>
+            <label for="sug-copies" class="block text-xs font-bold text-slate-700 uppercase mb-1">Initial Copies</label>
+            <input id="sug-copies" type="number" min="1" max="10" value="3" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none" required>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-amber-700 hover:bg-amber-800 text-white font-bold rounded-xl text-xs shadow-md mt-2 transition-all">
+          Add Book to Catalogue
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= 6. REGISTER NEW MEMBER MODAL ================= -->
+  <div id="modal-register" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-4 shadow-2xl border border-slate-200 relative">
+      <button id="btn-close-reg-modal" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">
+        ✕
+      </button>
+
+      <div>
+        <h3 class="text-xl font-serif-title font-bold text-slate-900">Register New Member</h3>
+        <p class="text-xs text-slate-500 mt-0.5">Creates member profile with immediate checkout readiness</p>
+      </div>
+
+      <form id="form-register-modal" class="space-y-3">
+        <div>
+          <label for="modal-reg-name" class="block text-xs font-bold text-slate-700 uppercase mb-1">Full Name</label>
+          <input id="modal-reg-name" type="text" placeholder="e.g. Andrea Smith" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none" required>
+        </div>
+        <div>
+          <label for="modal-reg-email" class="block text-xs font-bold text-slate-700 uppercase mb-1">Email</label>
+          <input id="modal-reg-email" type="email" placeholder="andrea@example.com" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none" required>
+        </div>
+        <div>
+          <label for="modal-reg-phone" class="block text-xs font-bold text-slate-700 uppercase mb-1">Mobile (10 digits)</label>
+          <input id="modal-reg-phone" type="tel" placeholder="9876543210" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none" required>
+        </div>
+        <div>
+          <label for="modal-reg-plan" class="block text-xs font-bold text-slate-700 uppercase mb-1">Membership Plan</label>
+          <select id="modal-reg-plan" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none bg-white font-medium">
+            <option value="Student">Student (3 books, 14 days)</option>
+            <option value="Faculty">Faculty (8 books, 30 days)</option>
+            <option value="Public">Public (2 books, 10 days)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-amber-700 hover:bg-amber-800 text-white font-bold rounded-xl text-xs shadow-md mt-2 transition-all">
+          Submit & Switch to This Member
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= LUXURY FOOTER ================= -->
+  <footer class="bg-slate-950 text-slate-400 py-14 border-t border-slate-800 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="space-y-3">
+        <h4 class="font-brand text-lg font-bold text-white tracking-wider">Shelfmark Library</h4>
+        <p class="leading-relaxed text-slate-400">
+          A modern digital and on-premises academic library platform offering seamless circulation, study space reservations, and curated scholarly archives.
+        </p>
+      </div>
+
+      <div>
+        <h5 class="font-bold text-white uppercase tracking-wider mb-2 font-mono text-[11px]">Quick Navigation</h5>
+        <ul class="space-y-1.5 text-[11px]">
+          <li><a href="#catalogue" class="hover:text-amber-400 transition-colors">Book Catalogue</a></li>
+          <li><a href="#loans" class="hover:text-amber-400 transition-colors">Active Loans & Renewals</a></li>
+          <li><a href="#study-pods" class="hover:text-amber-400 transition-colors">Study Pod Reservations</a></li>
+          <li><a href="#membership" class="hover:text-amber-400 transition-colors">Membership Tiers</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="font-bold text-white uppercase tracking-wider mb-2 font-mono text-[11px]">Library Services</h5>
+        <ul class="space-y-1.5 text-[11px]">
+          <li>Book Borrowing & Online Hold Queue</li>
+          <li>Digital Chapter Previews & Citations</li>
+          <li>Reference Room & Research Guidance</li>
+          <li>Quiet Study Carrels & Group Pods</li>
+          <li>Instant Digital Patron ID Pass</li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="font-bold text-white uppercase tracking-wider mb-2 font-mono text-[11px]">Central Reading Room</h5>
+        <p class="text-slate-400 leading-relaxed">
+          Central Library Block<br>
+          Main Road, Tiruchirappalli<br>
+          Tamil Nadu 620 001<br>
+          Contact: desk@shelfmark.example
+        </p>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 mt-8 border-t border-slate-900 text-center text-slate-500 font-mono text-[11px]">
+      &copy; 2026 Shelfmark Library. All digital rights reserved.
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT SYSTEM ENGINE ================= -->
+  <script>
+    // --- GLOBAL DATA STORE ---
+    const INITIAL_BOOKS = [
+      {
+        id: 1,
+        title: 'Clean Code',
+        author: 'Robert C. Martin',
+        category: 'Computer Science',
+        callNo: '005.1 MAR',
+        copies: 3,
+        rating: 4.9,
+        pages: '464 Pages',
+        shelf: '2nd Floor, Bay A',
+        coverColor: 'bg-sky-950',
+        excerpt: 'Even bad code can function. But if code isn’t clean, it can bring a development organization to its knees. Every year, countless hours and significant resources are lost because of poorly written code.'
+      },
+      {
+        id: 2,
+        title: 'Introduction to Algorithms',
+        author: 'Thomas H. Cormen, et al.',
+        category: 'Computer Science',
+        callNo: '005.1 COR',
+        copies: 0,
+        rating: 4.8,
+        pages: '1312 Pages',
+        shelf: '2nd Floor, Bay B',
+        coverColor: 'bg-rose-950',
+        excerpt: 'Before there were computers, there were algorithms. But now that there are computers, there are even more algorithms, and algorithms lie at the heart of computing.'
+      },
+      {
+        id: 3,
+        title: 'Database System Concepts',
+        author: 'Abraham Silberschatz',
+        category: 'Computer Science',
+        callNo: '005.74 SIL',
+        copies: 5,
+        rating: 4.7,
+        pages: '1376 Pages',
+        shelf: '2nd Floor, Bay C',
+        coverColor: 'bg-teal-950',
+        excerpt: 'Database management has evolved from a specialized computer application to a central component of a modern computing environment, underpinning enterprise transactions worldwide.'
+      },
+      {
+        id: 4,
+        title: 'Wings of Fire',
+        author: 'A. P. J. Abdul Kalam',
+        category: 'History and Biography',
+        callNo: '920 KAL',
+        copies: 2,
+        rating: 5.0,
+        pages: '180 Pages',
+        shelf: '1st Floor, Biography Wing',
+        coverColor: 'bg-amber-900',
+        excerpt: 'I was born into a middle-class Tamil family in the island town of Rameswaram in the erstwhile Madras state. My father, Jainulabdeen, had neither much formal education nor much wealth.'
+      },
+      {
+        id: 5,
+        title: 'The Discovery of India',
+        author: 'Jawaharlal Nehru',
+        category: 'History and Biography',
+        callNo: '954 NEH',
+        copies: 0,
+        rating: 4.9,
+        pages: '656 Pages',
+        shelf: '1st Floor, History Wing',
+        coverColor: 'bg-purple-950',
+        excerpt: 'India was in my blood and there was much in her that instinctively thrilled me. And yet I approached her almost as an alien critic, full of dislike for the present as well as for many of the relics of the past.'
+      },
+      {
+        id: 6,
+        title: 'Head First Java',
+        author: 'Kathy Sierra & Bert Bates',
+        category: 'Computer Science',
+        callNo: '005.13 SIE',
+        copies: 4,
+        rating: 4.6,
+        pages: '720 Pages',
+        shelf: '2nd Floor, Bay A',
+        coverColor: 'bg-emerald-950',
+        excerpt: 'Learning a complex new language is no easy task especially when it’s an object-oriented computer programming language like Java. Your brain craves novelty and visual engagement.'
+      },
+      {
+        id: 7,
+        title: 'Artificial Intelligence: A Modern Approach',
+        author: 'Stuart Russell & Peter Norvig',
+        category: 'Science and Technology',
+        callNo: '006.3 RUS',
+        copies: 1,
+        rating: 4.9,
+        pages: '1152 Pages',
+        shelf: '3rd Floor, AI Lab Archive',
+        coverColor: 'bg-indigo-950',
+        excerpt: 'We call ourselves Homo sapiens—man the wise—because our intelligence is so important to us. For thousands of years, we have tried to understand how we think and act.'
+      },
+      {
+        id: 8,
+        title: 'Malgudi Days',
+        author: 'R. K. Narayan',
+        category: 'Literature',
+        callNo: '823 NAR',
+        copies: 6,
+        rating: 4.8,
+        pages: '264 Pages',
+        shelf: 'Ground Floor, Classics',
+        coverColor: 'bg-stone-900',
+        excerpt: 'Punctually at midday he opened his bag and spread out his professional equipment, which consisted of a dozen cowrie shells, a square piece of cloth with obscure mystic charts on it, a notebook, and a bundle of palmyra writing.'
+      }
+    ];
+
+    const INITIAL_PODS = [
+      { id: 101, name: 'Pod A1 — Quiet Carrel', capacity: '1 Person', slot: '10:00 AM – 1:00 PM', floor: '2nd Floor Silent Zone', reservedBy: null },
+      { id: 102, name: 'Pod A2 — Quiet Carrel', capacity: '1 Person', slot: '2:00 PM – 5:00 PM', floor: '2nd Floor Silent Zone', reservedBy: 2 },
+      { id: 103, name: 'Room B1 — Team Table', capacity: '4 Persons', slot: '11:00 AM – 2:00 PM', floor: '3rd Floor Collab Wing', reservedBy: null },
+      { id: 104, name: 'Room B2 — Research Suite', capacity: '2 Persons', slot: '3:00 PM – 6:00 PM', floor: '1st Floor Archive Hall', reservedBy: null }
+    ];
+
+    let state = {
+      books: JSON.parse(JSON.stringify(INITIAL_BOOKS)),
+      members: [
+        { id: 1, name: 'Manoj', email: 'manoj@example.com', phone: '9000000001', plan: 'Student' },
+        { id: 2, name: 'Divya', email: 'divya@example.com', phone: '9000000002', plan: 'Student' }
+      ],
+      loans: [
+        { id: 1, bookId: 2, memberId: 1, borrowedOn: '2026-11-04', dueDate: '2026-11-18', returnedOn: null, renewals: 0 }
+      ],
+      wishlist: [1, 4], // Book IDs saved by user
+      waitlist: [],     // { bookId, memberId }
+      studyPods: JSON.parse(JSON.stringify(INITIAL_PODS)),
+      activeMemberId: 1,
+      searchQuery: '',
+      selectedCategory: 'All categories',
+      selectedSort: 'id',
+      modalBookId: null
+    };
+
+    // --- DOM REFERENCES ---
+    const booksGrid = document.getElementById('books-grid');
+    const loansListContainer = document.getElementById('loans-list-container');
+    const emptyLoansState = document.getElementById('empty-loans-state');
+    const emptyCatalogueState = document.getElementById('empty-catalogue-state');
+    const studyPodsGrid = document.getElementById('study-pods-grid');
+    const inputSearch = document.getElementById('input-search-query');
+    const selectCategory = document.getElementById('select-category');
+    const selectSort = document.getElementById('select-sort');
+    const selectActiveMember = document.getElementById('select-active-member');
+    const badgeLoansCount = document.getElementById('badge-loans-count');
+    const badgeWishlistCount = document.getElementById('badge-wishlist-count');
+    const activeMemberDisplay = document.getElementById('active-member-display');
+    const statTotalBooks = document.getElementById('stat-total-books');
+    const statAvailableCopies = document.getElementById('stat-available-copies');
+    const statActiveLoans = document.getElementById('stat-active-loans');
+    const catalogueCountLabel = document.getElementById('catalogue-count-label');
+
+    // Modals
+    const modalBookDetail = document.getElementById('modal-book-detail');
+    const modalRegister = document.getElementById('modal-register');
+    const modalWishlist = document.getElementById('modal-wishlist');
+    const modalIdCard = document.getElementById('modal-idcard');
+    const modalFineCalc = document.getElementById('modal-fine-calc');
+    const modalSuggest = document.getElementById('modal-suggest');
+
+    // --- HELPER: TOAST NOTIFICATIONS ---
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const isError = type === 'error';
+      toast.className = `px-5 py-3.5 rounded-2xl shadow-2xl text-white text-xs font-bold flex items-center gap-2.5 transform transition-all duration-300 translate-y-4 opacity-0 pointer-events-auto ${
+        isError ? 'bg-rose-700 border-l-4 border-rose-400' : 'bg-slate-950 border-l-4 border-amber-400'
+      }`;
+      toast.innerHTML = `<span>${isError ? '⚠️' : '✅'}</span><span>${message}</span>`;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-4', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // --- RENDER FUNCTIONS ---
+    function render() {
+      renderCatalogue();
+      renderLoans();
+      renderStudyPods();
+      renderMemberSelect();
+      updateMetrics();
+    }
+
+    function updateMetrics() {
+      const totalCopies = state.books.reduce((acc, b) => acc + b.copies, 0);
+      const memberLoans = state.loans.filter(l => l.memberId === state.activeMemberId && !l.returnedOn);
+
+      statTotalBooks.textContent = state.books.length;
+      statAvailableCopies.textContent = totalCopies;
+      statActiveLoans.textContent = memberLoans.length;
+      badgeLoansCount.textContent = memberLoans.length;
+      badgeWishlistCount.textContent = state.wishlist.length;
+
+      const currentMember = state.members.find(m => m.id === state.activeMemberId) || { name: 'Member', plan: 'Student' };
+      activeMemberDisplay.textContent = `${currentMember.name} (${currentMember.plan} #${currentMember.id})`;
+    }
+
+    function renderMemberSelect() {
+      selectActiveMember.innerHTML = state.members.map(m => `
+        <option value="${m.id}" ${m.id === state.activeMemberId ? 'selected' : ''}>
+          ${m.name} (${m.plan} #${m.id})
+        </option>
+      `).join('');
+    }
+
+    function renderCatalogue() {
+      const q = state.searchQuery.toLowerCase().trim();
+      let filtered = state.books.filter(b => {
+        const matchesQuery = !q || b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q) || b.callNo.toLowerCase().includes(q);
+        const matchesCat = state.selectedCategory === 'All categories' || b.category === state.selectedCategory;
+        return matchesQuery && matchesCat;
+      });
+
+      // Sorting
+      if (state.selectedSort === 'title') {
+        filtered.sort((a, b) => a.title.localeCompare(b.title));
+      } else if (state.selectedSort === 'copies') {
+        filtered.sort((a, b) => b.copies - a.copies);
+      } else if (state.selectedSort === 'rating') {
+        filtered.sort((a, b) => (b.rating || 4.5) - (a.rating || 4.5));
+      } else {
+        filtered.sort((a, b) => a.id - b.id);
+      }
+
+      catalogueCountLabel.textContent = `Showing ${filtered.length} book${filtered.length === 1 ? '' : 's'} for "${state.selectedCategory}"`;
+
+      if (filtered.length === 0) {
+        booksGrid.innerHTML = '';
+        emptyCatalogueState.classList.remove('hidden');
+        return;
+      }
+
+      emptyCatalogueState.classList.add('hidden');
+
+      const activeMemberLoans = state.loans.filter(l => l.memberId === state.activeMemberId && !l.returnedOn);
+      const borrowedBookIds = new Set(activeMemberLoans.map(l => l.bookId));
+
+      booksGrid.innerHTML = filtered.map(book => {
+        const hasBorrowed = borrowedBookIds.has(book.id);
+        const isAvailable = book.copies > 0;
+        const isSaved = state.wishlist.includes(book.id);
+        const onWaitlist = state.waitlist.some(w => w.bookId === book.id && w.memberId === state.activeMemberId);
+
+        return `
+          <article class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <!-- 3D Book Cover Card -->
+              <div class="h-48 ${book.coverColor} p-5 flex flex-col justify-between text-white relative overflow-hidden cursor-pointer book-card-cover" data-id="${book.id}">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 opacity-60"></div>
+
+                <div class="flex justify-between items-start">
+                  <span class="text-[10px] font-mono uppercase tracking-wider bg-black/40 backdrop-blur-md px-2.5 py-0.5 rounded-full text-amber-300 font-bold border border-white/10">
+                    ${book.category}
+                  </span>
+                  <div class="flex items-center gap-1.5">
+                    <button type="button" class="btn-toggle-wishlist w-7 h-7 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-xs hover:scale-110 transition-transform" data-id="${book.id}" title="Save to Reading List">
+                      ${isSaved ? '❤️' : '🤍'}
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="font-serif-title font-bold text-lg text-white leading-snug drop-shadow-md">${book.title}</h3>
+                  <p class="text-xs text-amber-100/80 mt-1 font-medium">${book.author}</p>
+                </div>
+              </div>
+
+              <!-- Book Details -->
+              <div class="p-5 space-y-2.5">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-mono text-slate-500 text-[11px] font-semibold">${book.callNo}</span>
+                  <span class="text-amber-600 font-bold text-[11px]">★ ${book.rating || '4.8'}</span>
+                </div>
+
+                <div class="flex items-center justify-between pt-0.5">
+                  <button type="button" class="text-[11px] font-bold text-indigo-700 hover:text-indigo-900 underline book-card-cover" data-id="${book.id}">
+                    📖 Preview Inside
+                  </button>
+                  ${
+                    hasBorrowed
+                      ? `<span class="px-2.5 py-0.5 rounded-full font-bold text-[10px] bg-amber-100 text-amber-950 border border-amber-300">Checked Out</span>`
+                      : isAvailable
+                      ? `<span class="px-2.5 py-0.5 rounded-full font-bold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-300">${book.copies} in stock</span>`
+                      : onWaitlist
+                      ? `<span class="px-2.5 py-0.5 rounded-full font-bold text-[10px] bg-indigo-100 text-indigo-800 border border-indigo-300">Hold Queued</span>`
+                      : `<span class="px-2.5 py-0.5 rounded-full font-bold text-[10px] bg-rose-100 text-rose-800 border border-rose-300">All Issued</span>`
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Button -->
+            <div class="p-5 pt-0">
+              ${
+                hasBorrowed
+                  ? `<button class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold text-xs rounded-2xl transition-all btn-return-action" data-id="${book.id}">
+                      Return Book
+                    </button>`
+                  : isAvailable
+                  ? `<button class="w-full py-2.5 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs rounded-2xl shadow-md transition-all btn-borrow-action" data-id="${book.id}">
+                      Borrow This Book
+                    </button>`
+                  : `<button class="w-full py-2.5 ${onWaitlist ? 'bg-indigo-50 text-indigo-800 border border-indigo-200' : 'bg-slate-900 hover:bg-slate-800 text-white'} font-bold text-xs rounded-2xl transition-all btn-waitlist-action" data-id="${book.id}">
+                      ${onWaitlist ? '✓ On Priority Waitlist (Leave)' : '🔔 Join Priority Waitlist'}
+                    </button>`
+              }
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function renderLoans() {
+      const activeMemberLoans = state.loans.filter(l => l.memberId === state.activeMemberId && !l.returnedOn);
+
+      if (activeMemberLoans.length === 0) {
+        loansListContainer.innerHTML = '';
+        emptyLoansState.classList.remove('hidden');
+        return;
+      }
+
+      emptyLoansState.classList.add('hidden');
+
+      loansListContainer.innerHTML = activeMemberLoans.map(loan => {
+        const book = state.books.find(b => b.id === loan.bookId) || { title: `Book #${loan.bookId}`, author: 'Unknown', callNo: '' };
+        const renewalsLeft = Math.max(0, 2 - (loan.renewals || 0));
+
+        return `
+          <div class="bg-white p-5 sm:p-6 rounded-3xl border border-amber-200/80 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-amber-400 transition-all">
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono font-bold text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-200">Loan #${loan.id}</span>
+                <h4 class="font-serif-title font-bold text-slate-900 text-lg">${book.title}</h4>
+              </div>
+              <p class="text-xs text-slate-500 font-medium">${book.author} • Call Number: <span class="font-mono text-slate-700 font-bold">${book.callNo}</span></p>
+              <div class="flex flex-wrap items-center gap-3 text-[11px] text-slate-500 pt-1">
+                <span>Borrowed: <strong>${loan.borrowedOn}</strong></span>
+                <span>•</span>
+                <span class="text-indigo-700 font-bold">Due Date: <strong>${loan.dueDate}</strong></span>
+                <span>•</span>
+                <span class="text-emerald-700 font-bold">Renewals Remaining: ${renewalsLeft}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2.5">
+              <button class="px-4 py-2.5 ${renewalsLeft > 0 ? 'bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} font-bold text-xs rounded-2xl transition-all btn-renew-action whitespace-nowrap" data-loan-id="${loan.id}" ${renewalsLeft === 0 ? 'disabled' : ''}>
+                🔄 Renew (+7 Days)
+              </button>
+              <button class="px-5 py-2.5 bg-slate-950 hover:bg-slate-800 text-white font-bold text-xs rounded-2xl transition-all btn-return-action whitespace-nowrap shadow-sm" data-id="${book.id}">
+                Return Book
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderStudyPods() {
+      studyPodsGrid.innerHTML = state.studyPods.map(pod => {
+        const isMine = pod.reservedBy === state.activeMemberId;
+        const isTaken = pod.reservedBy !== null && !isMine;
+
+        return `
+          <div class="bg-white p-5 rounded-3xl border ${isMine ? 'border-amber-400 bg-amber-50/30' : 'border-slate-200'} shadow-sm flex flex-col justify-between space-y-4">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
+                  isMine ? 'bg-amber-100 text-amber-900 border border-amber-300' : isTaken ? 'bg-slate-200 text-slate-600' : 'bg-emerald-100 text-emerald-800'
+                }">
+                  ${isMine ? 'Reserved by You' : isTaken ? 'Occupied' : 'Available'}
+                </span>
+                <span class="text-xs font-bold text-slate-500">${pod.capacity}</span>
+              </div>
+              <h3 class="font-bold text-slate-900 text-base">${pod.name}</h3>
+              <p class="text-xs text-slate-500">${pod.floor}</p>
+              <p class="text-xs font-mono font-semibold text-indigo-700">🕒 ${pod.slot}</p>
+            </div>
+
+            <button
+              class="w-full py-2.5 rounded-2xl text-xs font-bold transition-all btn-pod-action ${
+                isMine
+                  ? 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200'
+                  : isTaken
+                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                  : 'bg-slate-900 hover:bg-slate-800 text-white shadow-sm'
+              }"
+              data-pod-id="${pod.id}"
+              ${isTaken ? 'disabled' : ''}
+            >
+              ${isMine ? 'Cancel Reservation' : isTaken ? 'Currently Occupied' : 'Reserve This Pod'}
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderWishlistModal() {
+      const container = document.getElementById('wishlist-items-container');
+      const savedBooks = state.books.filter(b => state.wishlist.includes(b.id));
+
+      if (savedBooks.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+            <span class="text-3xl block mb-2">🤍</span>
+            <p class="text-sm font-bold text-slate-700">Your Reading List is empty</p>
+            <p class="text-xs text-slate-500 mt-1">Click the heart icon on any book cover to save titles for later.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = savedBooks.map(book => `
+        <div class="p-4 rounded-2xl border border-slate-200 flex items-center justify-between gap-3 bg-slate-50/60">
+          <div>
+            <h4 class="font-bold text-sm text-slate-900">${book.title}</h4>
+            <p class="text-xs text-slate-500">${book.author} • <span class="font-mono">${book.callNo}</span></p>
+            <span class="text-[10px] font-bold ${book.copies > 0 ? 'text-emerald-700' : 'text-rose-700'}">
+              ${book.copies > 0 ? `${book.copies} copies available` : 'Currently out of stock'}
+            </span>
+          </div>
+          <div class="flex items-center gap-2">
+            ${
+              book.copies > 0
+                ? `<button class="px-3 py-1.5 bg-amber-700 hover:bg-amber-800 text-white rounded-xl text-xs font-bold btn-wishlist-borrow" data-id="${book.id}">Borrow</button>`
+                : ''
+            }
+            <button class="p-1.5 text-slate-400 hover:text-rose-600 btn-wishlist-remove" data-id="${book.id}" title="Remove">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // --- ACTIONS: BORROW, RETURN, RENEW, WAITLIST, WISHLIST, PODS ---
+    function handleBorrow(bookId) {
+      const book = state.books.find(b => b.id === bookId);
+      if (!book || book.copies <= 0) {
+        showToast('No copies available to borrow!', 'error');
+        return;
+      }
+
+      const existing = state.loans.find(l => l.bookId === bookId && l.memberId === state.activeMemberId && !l.returnedOn);
+      if (existing) {
+        showToast('You already have an active loan for this book!', 'error');
+        return;
+      }
+
+      book.copies -= 1;
+
+      const newLoan = {
+        id: state.loans.length + 1,
+        bookId: book.id,
+        memberId: state.activeMemberId,
+        borrowedOn: new Date().toISOString().split('T')[0],
+        dueDate: new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0],
+        returnedOn: null,
+        renewals: 0
+      };
+      state.loans.push(newLoan);
+
+      render();
+      showToast(`Borrowed "${book.title}"! Due in 14 days.`);
+    }
+
+    function handleReturn(bookId) {
+      const book = state.books.find(b => b.id === bookId);
+      const loan = state.loans.find(l => l.bookId === bookId && l.memberId === state.activeMemberId && !l.returnedOn);
+
+      if (!loan) {
+        showToast('Loan record not found.', 'error');
+        return;
+      }
+
+      loan.returnedOn = new Date().toISOString().split('T')[0];
+      if (book) book.copies += 1;
+
+      render();
+      showToast(`Returned "${book ? book.title : 'Book'}". Inventory updated!`);
+    }
+
+    function handleRenew(loanId) {
+      const loan = state.loans.find(l => l.id === loanId);
+      if (!loan) return;
+      if ((loan.renewals || 0) >= 2) {
+        showToast('Maximum online renewals (2) reached for this loan.', 'error');
+        return;
+      }
+
+      const currentDue = new Date(loan.dueDate);
+      currentDue.setDate(currentDue.getDate() + 7);
+      loan.dueDate = currentDue.toISOString().split('T')[0];
+      loan.renewals = (loan.renewals || 0) + 1;
+
+      render();
+      showToast(`Loan renewed! New due date extended to ${loan.dueDate}.`);
+    }
+
+    function toggleWaitlist(bookId) {
+      const book = state.books.find(b => b.id === bookId);
+      const idx = state.waitlist.findIndex(w => w.bookId === bookId && w.memberId === state.activeMemberId);
+      if (idx >= 0) {
+        state.waitlist.splice(idx, 1);
+        showToast(`Removed from waitlist for "${book.title}".`);
+      } else {
+        state.waitlist.push({ bookId, memberId: state.activeMemberId });
+        showToast(`Joined Priority Hold Queue #1 for "${book.title}"!`);
+      }
+      render();
+    }
+
+    function toggleWishlist(bookId) {
+      const book = state.books.find(b => b.id === bookId);
+      const idx = state.wishlist.indexOf(bookId);
+      if (idx >= 0) {
+        state.wishlist.splice(idx, 1);
+        showToast(`Removed "${book.title}" from Saved List.`);
+      } else {
+        state.wishlist.push(bookId);
+        showToast(`Saved "${book.title}" to your Reading List ❤️`);
+      }
+      render();
+      if (!modalWishlist.classList.contains('hidden')) renderWishlistModal();
+    }
+
+    function togglePodReservation(podId) {
+      const pod = state.studyPods.find(p => p.id === podId);
+      if (!pod) return;
+
+      if (pod.reservedBy === state.activeMemberId) {
+        pod.reservedBy = null;
+        showToast(`Cancelled reservation for ${pod.name}.`);
+      } else if (pod.reservedBy === null) {
+        pod.reservedBy = state.activeMemberId;
+        showToast(`Reserved ${pod.name} (${pod.slot})!`);
+      }
+      renderStudyPods();
+    }
+
+    // --- EVENT LISTENERS ---
+    inputSearch.addEventListener('input', (e) => {
+      state.searchQuery = e.target.value;
+      renderCatalogue();
+    });
+
+    selectCategory.addEventListener('change', (e) => {
+      state.selectedCategory = e.target.value;
+      renderCatalogue();
+    });
+
+    selectSort.addEventListener('change', (e) => {
+      state.selectedSort = e.target.value;
+      renderCatalogue();
+    });
+
+    document.querySelectorAll('.chip-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.chip-filter').forEach(b => b.classList.remove('active', 'bg-slate-900', 'text-white'));
+        btn.classList.add('active', 'bg-slate-900', 'text-white');
+        const cat = btn.getAttribute('data-cat');
+        state.selectedCategory = cat;
+        selectCategory.value = cat;
+        renderCatalogue();
+      });
+    });
+
+    document.getElementById('btn-reset-filters').addEventListener('click', () => {
+      state.searchQuery = '';
+      inputSearch.value = '';
+      state.selectedCategory = 'All categories';
+      selectCategory.value = 'All categories';
+      document.querySelectorAll('.chip-filter').forEach(b => b.classList.remove('active', 'bg-slate-900', 'text-white'));
+      document.querySelector('.chip-filter[data-cat="All categories"]')?.classList.add('active', 'bg-slate-900', 'text-white');
+      renderCatalogue();
+    });
+
+    selectActiveMember.addEventListener('change', (e) => {
+      state.activeMemberId = Number(e.target.value);
+      render();
+      const currentMember = state.members.find(m => m.id === state.activeMemberId);
+      showToast(`Active session switched to ${currentMember.name}`);
+    });
+
+    document.querySelectorAll('.book-spine').forEach(spine => {
+      spine.addEventListener('click', () => {
+        const id = Number(spine.getAttribute('data-book-id'));
+        openBookModal(id);
+      });
+    });
+
+    booksGrid.addEventListener('click', (e) => {
+      const wishBtn = e.target.closest('.btn-toggle-wishlist');
+      if (wishBtn) {
+        e.stopPropagation();
+        toggleWishlist(Number(wishBtn.getAttribute('data-id')));
+        return;
+      }
+
+      const borrowBtn = e.target.closest('.btn-borrow-action');
+      if (borrowBtn) {
+        handleBorrow(Number(borrowBtn.getAttribute('data-id')));
+        return;
+      }
+
+      const returnBtn = e.target.closest('.btn-return-action');
+      if (returnBtn) {
+        handleReturn(Number(returnBtn.getAttribute('data-id')));
+        return;
+      }
+
+      const waitlistBtn = e.target.closest('.btn-waitlist-action');
+      if (waitlistBtn) {
+        toggleWaitlist(Number(waitlistBtn.getAttribute('data-id')));
+        return;
+      }
+
+      const cover = e.target.closest('.book-card-cover');
+      if (cover) {
+        openBookModal(Number(cover.getAttribute('data-id')));
+      }
+    });
+
+    loansListContainer.addEventListener('click', (e) => {
+      const returnBtn = e.target.closest('.btn-return-action');
+      if (returnBtn) {
+        handleReturn(Number(returnBtn.getAttribute('data-id')));
+        return;
+      }
+
+      const renewBtn = e.target.closest('.btn-renew-action');
+      if (renewBtn) {
+        handleRenew(Number(renewBtn.getAttribute('data-loan-id')));
+      }
+    });
+
+    studyPodsGrid.addEventListener('click', (e) => {
+      const podBtn = e.target.closest('.btn-pod-action');
+      if (podBtn) {
+        togglePodReservation(Number(podBtn.getAttribute('data-pod-id')));
+      }
+    });
+
+    // --- MODAL LOGIC: BOOK PREVIEW ---
+    function openBookModal(bookId) {
+      const book = state.books.find(b => b.id === bookId);
+      if (!book) return;
+      state.modalBookId = bookId;
+
+      document.getElementById('modal-title').textContent = book.title;
+      document.getElementById('modal-author').textContent = `By ${book.author}`;
+      document.getElementById('modal-category').textContent = book.category;
+      document.getElementById('modal-rating').textContent = `★ ${book.rating || '4.8'}`;
+      document.getElementById('modal-pages').textContent = book.pages || '380 Pages';
+      document.getElementById('modal-shelf').textContent = book.shelf || '2nd Floor, Reading Wing';
+      document.getElementById('modal-excerpt').textContent = `"${book.excerpt || 'A foundational text in the Shelfmark Library curated academic collection.'}"`;
+      document.getElementById('modal-callno').textContent = book.callNo;
+      document.getElementById('modal-copies').textContent = `${book.copies} available`;
+
+      const isSaved = state.wishlist.includes(bookId);
+      document.getElementById('modal-wishlist-label').textContent = isSaved ? 'Saved in List' : 'Save to List';
+
+      const borrowBtn = document.getElementById('btn-modal-borrow-action');
+      const hasBorrowed = state.loans.some(l => l.bookId === bookId && l.memberId === state.activeMemberId && !l.returnedOn);
+
+      if (hasBorrowed) {
+        borrowBtn.textContent = 'Already Borrowed';
+        borrowBtn.disabled = true;
+        borrowBtn.className = 'px-6 py-2.5 rounded-xl bg-slate-200 text-slate-500 text-xs font-bold cursor-not-allowed';
+      } else if (book.copies <= 0) {
+        borrowBtn.textContent = 'Join Priority Waitlist';
+        borrowBtn.disabled = false;
+        borrowBtn.className = 'px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-md';
+      } else {
+        borrowBtn.textContent = 'Borrow This Book';
+        borrowBtn.disabled = false;
+        borrowBtn.className = 'px-6 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold shadow-md';
+      }
+
+      modalBookDetail.classList.remove('hidden');
+    }
+
+    document.getElementById('btn-close-modal').addEventListener('click', () => modalBookDetail.classList.add('hidden'));
+    document.getElementById('btn-modal-close-action').addEventListener('click', () => modalBookDetail.classList.add('hidden'));
+
+    document.getElementById('btn-modal-wishlist').addEventListener('click', () => {
+      if (state.modalBookId) {
+        toggleWishlist(state.modalBookId);
+        const isSaved = state.wishlist.includes(state.modalBookId);
+        document.getElementById('modal-wishlist-label').textContent = isSaved ? 'Saved in List' : 'Save to List';
+      }
+    });
+
+    document.getElementById('btn-modal-borrow-action').addEventListener('click', () => {
+      if (!state.modalBookId) return;
+      const book = state.books.find(b => b.id === state.modalBookId);
+      if (book && book.copies > 0) {
+        handleBorrow(state.modalBookId);
+      } else {
+        toggleWaitlist(state.modalBookId);
+      }
+      modalBookDetail.classList.add('hidden');
+    });
+
+    // --- WISHLIST MODAL ---
+    document.getElementById('btn-open-wishlist').addEventListener('click', () => {
+      renderWishlistModal();
+      modalWishlist.classList.remove('hidden');
+    });
+    document.getElementById('btn-close-wishlist').addEventListener('click', () => modalWishlist.classList.add('hidden'));
+
+    document.getElementById('wishlist-items-container').addEventListener('click', (e) => {
+      const borrowBtn = e.target.closest('.btn-wishlist-borrow');
+      if (borrowBtn) {
+        handleBorrow(Number(borrowBtn.getAttribute('data-id')));
+        renderWishlistModal();
+        return;
+      }
+      const removeBtn = e.target.closest('.btn-wishlist-remove');
+      if (removeBtn) {
+        toggleWishlist(Number(removeBtn.getAttribute('data-id')));
+      }
+    });
+
+    // --- DIGITAL LIBRARY ID CARD MODAL ---
+    document.getElementById('btn-open-idcard').addEventListener('click', () => {
+      const m = state.members.find(mem => mem.id === state.activeMemberId) || state.members[0];
+      const activeLoans = state.loans.filter(l => l.memberId === m.id && !l.returnedOn).length;
+      const maxLoans = m.plan === 'Faculty' ? 8 : m.plan === 'Public' ? 2 : 3;
+
+      document.getElementById('idcard-avatar').textContent = m.name.charAt(0).toUpperCase();
+      document.getElementById('idcard-name').textContent = m.name;
+      document.getElementById('idcard-plan').textContent = `${m.plan} Membership Tier`;
+      document.getElementById('idcard-email').textContent = m.email;
+      document.getElementById('idcard-number').textContent = `LIB-2026-00${m.id}`;
+      document.getElementById('idcard-loans').textContent = `${activeLoans} / ${maxLoans}`;
+      document.getElementById('idcard-barcode-text').textContent = `*SHLF-2026-MEM-00${m.id}*`;
+
+      modalIdCard.classList.remove('hidden');
+    });
+    document.getElementById('btn-close-idcard').addEventListener('click', () => modalIdCard.classList.add('hidden'));
+
+    // --- LATE FEE ESTIMATOR MODAL ---
+    const calcBooks = document.getElementById('calc-books');
+    const calcDays = document.getElementById('calc-days');
+    function updateFineCalculator() {
+      const b = Number(calcBooks.value);
+      const d = Number(calcDays.value);
+      const total = b * d * 2;
+      document.getElementById('calc-books-val').textContent = b;
+      document.getElementById('calc-days-val').textContent = `${d} Day${d === 1 ? '' : 's'}`;
+      document.getElementById('calc-total-fine').textContent = `Rs. ${total}.00`;
+      const note = document.getElementById('calc-status-note');
+      if (total > 100) {
+        note.textContent = '⚠️ Exceeds Rs. 100 limit (borrowing paused until settled)';
+        note.className = 'text-[11px] text-rose-700 font-bold';
+      } else {
+        note.textContent = '✓ Account remains in good borrowing standing';
+        note.className = 'text-[11px] text-amber-800';
+      }
+    }
+    calcBooks.addEventListener('input', updateFineCalculator);
+    calcDays.addEventListener('input', updateFineCalculator);
+
+    document.getElementById('btn-open-fine-calc').addEventListener('click', () => {
+      updateFineCalculator();
+      modalFineCalc.classList.remove('hidden');
+    });
+    document.getElementById('btn-close-fine-calc').addEventListener('click', () => modalFineCalc.classList.add('hidden'));
+
+    // --- SUGGEST A BOOK MODAL ---
+    document.getElementById('btn-open-suggest-modal').addEventListener('click', () => modalSuggest.classList.remove('hidden'));
+    document.getElementById('btn-close-suggest').addEventListener('click', () => modalSuggest.classList.add('hidden'));
+
+    document.getElementById('form-suggest-book').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('sug-title').value.trim();
+      const author = document.getElementById('sug-author').value.trim();
+      const category = document.getElementById('sug-category').value;
+      const copies = Number(document.getElementById('sug-copies').value) || 2;
+
+      const newBook = {
+        id: state.books.length + 1,
+        title,
+        author,
+        category,
+        callNo: `005.${state.books.length + 1} ${author.slice(0, 3).toUpperCase()}`,
+        copies,
+        rating: 5.0,
+        pages: '350 Pages',
+        shelf: 'New Arrivals Shelf',
+        coverColor: 'bg-slate-900',
+        excerpt: `Newly acquired volume "${title}" by ${author}, added to the Shelfmark Library collection by patron recommendation.`
+      };
+      state.books.push(newBook);
+      render();
+      modalSuggest.classList.add('hidden');
+      showToast(`Added "${title}" to the Library Catalogue!`);
+      e.target.reset();
+    });
+
+    // --- REGISTER NEW MEMBER MODAL & INLINE FORM ---
+    document.getElementById('btn-open-register-modal').addEventListener('click', () => modalRegister.classList.remove('hidden'));
+    document.getElementById('btn-close-reg-modal').addEventListener('click', () => modalRegister.classList.add('hidden'));
+
+    document.getElementById('form-register-modal').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('modal-reg-name').value.trim();
+      const email = document.getElementById('modal-reg-email').value.trim();
+      const phone = document.getElementById('modal-reg-phone').value.trim();
+      const plan = document.getElementById('modal-reg-plan').value;
+
+      const newMember = { id: state.members.length + 1, name, email, phone, plan };
+      state.members.push(newMember);
+      state.activeMemberId = newMember.id;
+
+      render();
+      modalRegister.classList.add('hidden');
+      showToast(`Member created! Switched session to ${name}`);
+      e.target.reset();
+    });
+
+    document.getElementById('form-register-inline').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const phone = document.getElementById('reg-phone').value.trim();
+      const plan = document.getElementById('reg-plan').value;
+
+      const newMember = { id: state.members.length + 1, name, email, phone, plan };
+      state.members.push(newMember);
+      state.activeMemberId = newMember.id;
+
+      render();
+      showToast(`Welcome ${name}! Membership #${newMember.id} activated.`);
+      e.target.reset();
+    });
+
+    // --- INITIAL BOOTSTRAP ---
+    render();
+  </script>
+</body>
+</html>
