@@ -33,7 +33,6 @@
       font-family: 'Cinzel', serif;
     }
 
-    /* Custom scrollbar */
     ::-webkit-scrollbar {
       width: 7px;
       height: 7px;
@@ -49,7 +48,6 @@
       background: #94a3b8;
     }
 
-    /* 3D Realistic Book Spines */
     .book-spine {
       height: var(--h, 205px);
       width: var(--w, 38px);
@@ -81,7 +79,6 @@
       transform: rotate(0deg) translateY(-18px) scale(1.06);
     }
 
-    /* Marquee animation */
     @keyframes marquee {
       0% { transform: translateX(0%); }
       100% { transform: translateX(-50%); }
@@ -95,14 +92,12 @@
       animation-play-state: paused;
     }
 
-    /* Active filter pill */
     .filter-pill.active {
       background-color: #0f172a;
       color: #ffffff;
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
     }
 
-    /* Shimmer effect */
     @keyframes shimmer {
       0% { background-position: -200% 0; }
       100% { background-position: 200% 0; }
@@ -113,15 +108,6 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: shimmer 5s infinite linear;
-    }
-
-    /* Pulse subtle */
-    @keyframes pulse-subtle {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.94; transform: scale(1.01); }
-    }
-    .animate-pulse-subtle {
-      animation: pulse-subtle 3s infinite ease-in-out;
     }
   </style>
 </head>
@@ -156,38 +142,27 @@
           <a href="#rules" class="hover:text-amber-700 transition-colors py-2">Rules</a>
         </nav>
 
-        <!-- Right Side: Wishlist, Cart, ID Card, User Switcher -->
+        <!-- Right Side: Wishlist, Cart, ID Card, Auth -->
         <div class="flex items-center gap-2.5">
-          
-          <!-- Saved Wishlist Drawer Toggle -->
           <button id="btn-open-wishlist" class="flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200 px-3 py-2 rounded-xl text-xs font-bold transition-all shadow-sm" title="Saved Reading List">
             <span>❤️</span>
             <span class="hidden md:inline">Saved</span>
             <span id="badge-wishlist-count" class="bg-rose-600 text-white rounded-full px-1.5 py-0.2 text-[10px] font-black">0</span>
           </button>
 
-          <!-- Loans Cart Button -->
           <a href="#loans" class="flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300/80 px-3 py-2 rounded-xl text-xs font-bold transition-all shadow-sm">
             <span>📖</span>
             <span class="hidden sm:inline">My Loans</span>
-            <span id="badge-loans-count" class="bg-amber-700 text-white rounded-full px-2 py-0.5 text-[11px] font-black">1</span>
+            <span id="badge-loans-count" class="bg-amber-700 text-white rounded-full px-2 py-0.5 text-[11px] font-black">0</span>
           </a>
 
-          <!-- Digital Library Card Trigger -->
           <button id="btn-open-idcard" class="hidden sm:flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold transition-all" title="View Digital Library Card">
             <span>🪪</span>
             <span class="hidden md:inline">ID Pass</span>
           </button>
 
-          <!-- Active User Session Switcher Pill -->
-          <div class="flex items-center gap-2 bg-slate-950 text-white px-3 py-2 rounded-xl text-xs shadow-md border border-slate-800">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            <select id="select-active-member" class="bg-transparent text-white font-bold text-xs outline-none cursor-pointer pr-1" aria-label="Active Member Profile">
-              <option value="1" class="text-slate-900 font-normal">Manoj (Student #1)</option>
-              <option value="2" class="text-slate-900 font-normal">Divya (Student #2)</option>
-            </select>
-          </div>
-
+          <!-- Dynamic Sign In / Sign Out Area -->
+          <div id="nav-auth-area" class="flex items-center gap-2"></div>
         </div>
 
       </div>
@@ -220,12 +195,9 @@
 
     <!-- ================= 1. HERO SECTION WITH 3D BOOKSHELF ================= -->
     <section id="top" class="relative bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white pt-16 pb-20 px-4 overflow-hidden border-b border-slate-800">
-      
-      <!-- Subtle Luxury Ambient Glow -->
       <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
       <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-        
         <div class="lg:col-span-7 space-y-6">
           <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-300 text-xs font-bold tracking-wide">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
@@ -269,7 +241,6 @@
               </div>
             </div>
 
-            <!-- Quick Filter Chips -->
             <div class="flex flex-wrap items-center gap-1.5 pt-1 text-xs">
               <span class="text-slate-400 font-semibold mr-1.5">Quick Filters:</span>
               <button class="chip-filter px-3 py-1 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-white font-medium filter-pill active" data-cat="All categories">All</button>
@@ -290,7 +261,7 @@
               <p class="text-[11px] text-slate-400 uppercase tracking-wider font-bold mt-0.5">Available Copies</p>
             </div>
             <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl shadow-sm">
-              <p class="text-2xl sm:text-3xl font-black text-sky-400 font-brand" id="stat-active-loans">1</p>
+              <p class="text-2xl sm:text-3xl font-black text-sky-400 font-brand" id="stat-active-loans">0</p>
               <p class="text-[11px] text-slate-400 uppercase tracking-wider font-bold mt-0.5">Active Loans</p>
             </div>
           </div>
@@ -309,7 +280,6 @@
               </span>
             </div>
 
-            <!-- 3D Wooden Shelf Display -->
             <div class="h-64 flex items-end justify-center gap-2.5 px-4 pb-2 border-b-[10px] border-amber-950 rounded-b-md bg-slate-950/60 relative">
               <div class="book-spine bg-sky-950 border-l border-sky-600" style="--h: 215px; --w: 36px;" title="Clean Code" data-book-id="1">
                 <span class="text-[9px] text-amber-200 font-bold rotate-90 block whitespace-nowrap mt-12 tracking-wide font-mono">Clean Code</span>
@@ -336,13 +306,11 @@
             </p>
           </div>
         </div>
-
       </div>
     </section>
 
     <!-- ================= 2. LIVE CATALOGUE SECTION ================= -->
     <section id="catalogue" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-8 border-b border-slate-200">
         <div>
           <span class="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">
@@ -369,12 +337,8 @@
         </div>
       </div>
 
-      <!-- Book Cards Grid -->
-      <div id="books-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-8">
-        <!-- Populated dynamically via JS -->
-      </div>
+      <div id="books-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-8"></div>
 
-      <!-- Empty Filter State -->
       <div id="empty-catalogue-state" class="hidden text-center py-16 bg-white rounded-3xl border border-dashed border-slate-300 my-8">
         <span class="text-4xl block mb-2">🔍</span>
         <h3 class="text-lg font-bold text-slate-800">No books found</h3>
@@ -383,13 +347,11 @@
           Reset All Filters
         </button>
       </div>
-
     </section>
 
     <!-- ================= 3. ACTIVE LOANS & RENEWALS DESK ================= -->
     <section id="loans" class="bg-amber-50/60 border-y border-amber-200/60 py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <div class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-900 uppercase tracking-wider">
@@ -397,7 +359,7 @@
             </div>
             <h2 class="text-3xl font-serif-title font-bold text-slate-900 mt-1">Currently Borrowed Books</h2>
             <p class="text-sm text-slate-600 mt-0.5">
-              Active account: <strong id="active-member-display" class="text-amber-900 font-bold">Manoj (Student #1)</strong>
+              Active account: <strong id="active-member-display" class="text-amber-900 font-bold">Not Signed In</strong>
             </p>
           </div>
 
@@ -411,20 +373,26 @@
           </div>
         </div>
 
-        <!-- Loans Cards Container -->
-        <div id="loans-list-container" class="space-y-3.5">
-          <!-- Populated dynamically via JS -->
-        </div>
+        <div id="loans-list-container" class="space-y-3.5"></div>
 
-        <!-- Empty Loans State -->
-        <div id="empty-loans-state" class="bg-white rounded-3xl p-8 border border-amber-200/80 text-center shadow-sm">
+        <div id="empty-loans-state" class="bg-white rounded-3xl p-8 border border-amber-200/80 text-center shadow-sm hidden">
           <span class="text-4xl block mb-2">✨</span>
           <p class="font-bold text-slate-800 text-base">No active loans under this account</p>
           <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
-            Select any book with available copies from the catalogue above and click <strong>"Borrow This Book"</strong> to test immediate state updates.
+            Select any book with available copies from the catalogue above and click <strong>"Borrow This Book"</strong>.
           </p>
         </div>
 
+        <div id="locked-loans-state" class="bg-white rounded-3xl p-8 border border-dashed border-amber-300 text-center shadow-sm">
+          <span class="text-4xl block mb-2">🔒</span>
+          <p class="font-bold text-slate-800 text-base">Sign In to View Your Active Loans</p>
+          <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+            Authenticate with your patron account to view borrowed books, due dates, and 1-click renewals.
+          </p>
+          <button onclick="openAuthModal()" class="mt-4 px-5 py-2.5 bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold rounded-xl shadow-sm">
+            Sign In
+          </button>
+        </div>
       </div>
     </section>
 
@@ -450,15 +418,12 @@
         </div>
       </div>
 
-      <div id="study-pods-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <!-- Populated dynamically via JS -->
-      </div>
+      <div id="study-pods-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
     </section>
 
     <!-- ================= 5. HOW BORROWING WORKS ================= -->
     <section id="borrowing" class="bg-slate-100/70 border-b border-slate-200/80 py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         <div class="text-center max-w-2xl mx-auto mb-12">
           <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 uppercase tracking-wider">
             Simple 4-Step Process
@@ -473,61 +438,35 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition-shadow">
-            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-brand font-black text-lg flex items-center justify-center">
-              1
-            </div>
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-brand font-black text-lg flex items-center justify-center">1</div>
             <h3 class="font-bold text-base text-slate-900">Join the Library</h3>
-            <p class="text-xs text-slate-500 leading-relaxed">
-              Complete the quick registration form to receive your digital library membership ID and pass immediately.
-            </p>
+            <p class="text-xs text-slate-500 leading-relaxed">Complete the quick registration form to receive your digital library membership ID and pass immediately.</p>
           </div>
-
           <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition-shadow">
-            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-brand font-black text-lg flex items-center justify-center">
-              2
-            </div>
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-brand font-black text-lg flex items-center justify-center">2</div>
             <h3 class="font-bold text-base text-slate-900">Search & Preview</h3>
-            <p class="text-xs text-slate-500 leading-relaxed">
-              Filter by subject, read interactive chapter previews, or save favorites to your personal reading list.
-            </p>
+            <p class="text-xs text-slate-500 leading-relaxed">Filter by subject, read interactive chapter previews, or save favorites to your personal reading list.</p>
           </div>
-
           <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition-shadow">
-            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-brand font-black text-lg flex items-center justify-center">
-              3
-            </div>
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-brand font-black text-lg flex items-center justify-center">3</div>
             <h3 class="font-bold text-base text-slate-900">Borrow or Waitlist</h3>
-            <p class="text-xs text-slate-500 leading-relaxed">
-              Click "Borrow" on available titles, or join the priority hold queue if all copies are currently checked out.
-            </p>
+            <p class="text-xs text-slate-500 leading-relaxed">Click "Borrow" on available titles, or join the priority hold queue if all copies are currently checked out.</p>
           </div>
-
           <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition-shadow">
-            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-brand font-black text-lg flex items-center justify-center">
-              4
-            </div>
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-brand font-black text-lg flex items-center justify-center">4</div>
             <h3 class="font-bold text-base text-slate-900">Renew or Return</h3>
-            <p class="text-xs text-slate-500 leading-relaxed">
-              Extend your due date by +7 days with 1-click online renewal, or return volumes anytime to free up your quota.
-            </p>
+            <p class="text-xs text-slate-500 leading-relaxed">Extend your due date by +7 days with 1-click online renewal, or return volumes anytime to free up your quota.</p>
           </div>
         </div>
-
       </div>
     </section>
 
     <!-- ================= 6. MEMBERSHIP PLANS ================= -->
     <section id="membership" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 uppercase tracking-wider">
-          Membership Tiers
-        </span>
-        <h2 class="text-3xl sm:text-4xl font-serif-title font-bold text-slate-900 mt-2">
-          Membership Plans Comparison
-        </h2>
-        <p class="text-sm text-slate-600 mt-1">
-          Choose the plan tailored to your study, teaching, or personal reading habits.
-        </p>
+        <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 uppercase tracking-wider">Membership Tiers</span>
+        <h2 class="text-3xl sm:text-4xl font-serif-title font-bold text-slate-900 mt-2">Membership Plans Comparison</h2>
+        <p class="text-sm text-slate-600 mt-1">Choose the plan tailored to your study, teaching, or personal reading habits.</p>
       </div>
 
       <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
@@ -581,15 +520,9 @@
     <!-- ================= 7. LIBRARY POLICIES & HOURS ================= -->
     <section id="rules" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-slate-200">
       <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 uppercase tracking-wider">
-          Library Policies
-        </span>
-        <h2 class="text-3xl sm:text-4xl font-serif-title font-bold text-slate-900 mt-2">
-          Rules & Operating Hours
-        </h2>
-        <p class="text-sm text-slate-600 mt-1">
-          Clear, accessible guidelines for circulation, renewal, and library conduct.
-        </p>
+        <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 uppercase tracking-wider">Library Policies</span>
+        <h2 class="text-3xl sm:text-4xl font-serif-title font-bold text-slate-900 mt-2">Rules & Operating Hours</h2>
+        <p class="text-sm text-slate-600 mt-1">Clear, accessible guidelines for circulation, renewal, and library conduct.</p>
       </div>
 
       <div class="max-w-3xl mx-auto space-y-3.5">
@@ -598,39 +531,14 @@
             <span>Operating Hours & Reading Room Schedule</span>
             <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
           </summary>
-          <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
-            Monday through Friday: 9:00 AM – 7:00 PM. Saturday: 9:00 AM – 2:00 PM. Closed on Sundays and official statutory government holidays.
-          </p>
+          <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">Monday through Friday: 9:00 AM – 7:00 PM. Saturday: 9:00 AM – 2:00 PM. Closed on Sundays and official statutory government holidays.</p>
         </details>
-
         <details class="group bg-white p-5 rounded-3xl border border-slate-200 open:bg-amber-50/50 open:border-amber-300 transition-all cursor-pointer shadow-sm">
           <summary class="font-bold text-sm text-slate-800 list-none flex justify-between items-center">
             <span>Overdue Policies & Fine Calculation</span>
             <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
           </summary>
-          <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
-            An overdue charge of Rs. 2.00 per day is automatically computed for each volume kept past the due date. Accounts with accumulated fines exceeding Rs. 100 will temporarily pause new checkout privileges.
-          </p>
-        </details>
-
-        <details class="group bg-white p-5 rounded-3xl border border-slate-200 open:bg-amber-50/50 open:border-amber-300 transition-all cursor-pointer shadow-sm">
-          <summary class="font-bold text-sm text-slate-800 list-none flex justify-between items-center">
-            <span>Care of Volumes & Replacement Terms</span>
-            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-          </summary>
-          <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
-            Borrowers are responsible for returning items in clean condition. If a volume is damaged or lost, the borrower may provide an identical edition or pay the publisher replacement value.
-          </p>
-        </details>
-
-        <details class="group bg-white p-5 rounded-3xl border border-slate-200 open:bg-amber-50/50 open:border-amber-300 transition-all cursor-pointer shadow-sm">
-          <summary class="font-bold text-sm text-slate-800 list-none flex justify-between items-center">
-            <span>Non-Circulating Reference Collections</span>
-            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-          </summary>
-          <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
-            Encyclopaedias, historical manuscripts, current issues of print journals, and competitive exam question banks are strictly reserved for in-library reading room consultation.
-          </p>
+          <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">An overdue charge of Rs. 2.00 per day is automatically computed for each volume kept past the due date.</p>
         </details>
       </div>
     </section>
@@ -639,152 +547,118 @@
     <section id="join" class="bg-gradient-to-b from-slate-100 to-white py-16 border-t border-slate-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
           <div class="lg:col-span-5 space-y-4">
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 uppercase tracking-wider">
-              Instant Membership
-            </span>
-            <h2 class="text-3xl sm:text-4xl font-serif-title font-bold text-slate-900">
-              Join Shelfmark Library
-            </h2>
-            <p class="text-sm text-slate-600 leading-relaxed">
-              Register in seconds to activate your digital library card. Borrow up to 3 books under the Student plan with 14-day loan terms and online renewal privileges.
-            </p>
-            
-            <div class="space-y-3 pt-2">
-              <div class="flex items-start gap-3">
-                <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold">✓</span>
-                <div>
-                  <p class="text-xs font-bold text-slate-800">Instant Digital Pass</p>
-                  <p class="text-xs text-slate-500">Immediate membership ID generation and digital barcode card.</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold">✓</span>
-                <div>
-                  <p class="text-xs font-bold text-slate-800">Study Pod & E-Book Access</p>
-                  <p class="text-xs text-slate-500">Reserve quiet study rooms and preview digital chapters online.</p>
-                </div>
-              </div>
-            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 uppercase tracking-wider">Instant Membership</span>
+            <h2 class="text-3xl sm:text-4xl font-serif-title font-bold text-slate-900">Join Shelfmark Library</h2>
+            <p class="text-sm text-slate-600 leading-relaxed">Register in seconds to activate your digital library card and sign in immediately.</p>
           </div>
 
           <div class="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xl">
             <form id="form-register-inline" class="space-y-4">
               <div>
                 <label for="reg-name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Full Name *</label>
-                <input
-                  id="reg-name"
-                  type="text"
-                  placeholder="e.g. Senthil Kumar"
-                  class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
-                  required
-                >
+                <input id="reg-name" type="text" placeholder="e.g. Senthil Kumar" class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" required>
               </div>
-
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label for="reg-email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email Address *</label>
-                  <input
-                    id="reg-email"
-                    type="email"
-                    placeholder="senthil@example.com"
-                    class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
-                    required
-                  >
+                  <input id="reg-email" type="email" placeholder="senthil@example.com" class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" required>
                 </div>
                 <div>
                   <label for="reg-phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Mobile (10 digits) *</label>
-                  <input
-                    id="reg-phone"
-                    type="tel"
-                    placeholder="9876543210"
-                    class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
-                    required
-                  >
+                  <input id="reg-phone" type="tel" placeholder="9876543210" class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" required>
                 </div>
               </div>
-
-              <div>
-                <label for="reg-plan" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Membership Plan *</label>
-                <select
-                  id="reg-plan"
-                  class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none bg-white font-medium"
-                >
-                  <option value="Student">Student (3 books, 14 days loan, Free renewal)</option>
-                  <option value="Faculty">Faculty (8 books, 30 days loan, Priority hold)</option>
-                  <option value="Public">Public (2 books, 10 days loan)</option>
-                </select>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="reg-password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Password *</label>
+                  <input id="reg-password" type="password" minlength="4" placeholder="Minimum 4 characters" class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" required>
+                </div>
+                <div>
+                  <label for="reg-plan" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Membership Plan *</label>
+                  <select id="reg-plan" class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none bg-white font-medium">
+                    <option value="Student">Student (3 books, 14 days)</option>
+                    <option value="Faculty">Faculty (8 books, 30 days)</option>
+                    <option value="Public">Public (2 books, 10 days)</option>
+                  </select>
+                </div>
               </div>
-
-              <button
-                type="submit"
-                class="w-full py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-bold rounded-2xl text-sm shadow-md transition-all"
-              >
-                Create Membership Account
+              <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-bold rounded-2xl text-sm shadow-md transition-all">
+                Create Membership Account &amp; Sign In
               </button>
             </form>
           </div>
-
         </div>
       </div>
     </section>
 
   </main>
 
+  <!-- ================= AUTHENTICATION (SIGN IN) MODAL ================= -->
+  <div id="modal-auth" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-4 shadow-2xl border border-slate-200 relative">
+      <button id="btn-close-auth" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">✕</button>
+      <div>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">Patron Access</span>
+        <h3 class="text-2xl font-serif-title font-bold text-slate-900 mt-1">Sign In to Shelfmark</h3>
+        <p class="text-xs text-slate-500 mt-0.5">Enter your registered email and password</p>
+      </div>
+      <form id="form-login" class="space-y-3">
+        <div>
+          <label for="login-email" class="block text-xs font-bold text-slate-700 uppercase mb-1">Email Address</label>
+          <input id="login-email" type="email" placeholder="manoj@example.com" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none" required>
+        </div>
+        <div>
+          <label for="login-password" class="block text-xs font-bold text-slate-700 uppercase mb-1">Password</label>
+          <input id="login-password" type="password" placeholder="Enter password" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none" required>
+        </div>
+        <button type="submit" class="w-full py-3 bg-amber-700 hover:bg-amber-800 text-white font-bold rounded-xl text-xs shadow-md transition-all">Sign In</button>
+      </form>
+      <div class="pt-3 border-t border-slate-200">
+        <p class="text-[11px] font-bold text-slate-500 uppercase mb-2">1-Click Demo Accounts (Pass: 1234):</p>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" onclick="demoLogin('manoj@example.com', '1234')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold">Manoj (Student #1)</button>
+          <button type="button" onclick="demoLogin('divya@example.com', '1234')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold">Divya (Student #2)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= 1. BOOK DETAIL & "LOOK INSIDE" PREVIEW MODAL ================= -->
   <div id="modal-book-detail" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-slate-200 relative max-h-[90vh] overflow-y-auto">
-      <button id="btn-close-modal" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">
-        ✕
-      </button>
-
+      <button id="btn-close-modal" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">✕</button>
       <div class="flex items-start gap-4">
-        <span id="modal-cover-badge" class="w-16 h-20 rounded-2xl bg-amber-700 text-white flex items-center justify-center text-2xl font-bold shadow-md shrink-0">
-          📖
-        </span>
+        <span id="modal-cover-badge" class="w-16 h-20 rounded-2xl bg-amber-700 text-white flex items-center justify-center text-2xl font-bold shadow-md shrink-0">📖</span>
         <div>
           <div class="flex items-center gap-2">
-            <span id="modal-category" class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
-              Category
-            </span>
+            <span id="modal-category" class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">Category</span>
             <span id="modal-rating" class="text-xs font-bold text-amber-500">★ 4.9</span>
           </div>
           <h3 id="modal-title" class="text-xl sm:text-2xl font-serif-title font-bold text-slate-900 leading-tight mt-1">Book Title</h3>
           <p id="modal-author" class="text-xs text-slate-500 font-semibold mt-0.5">Author Name</p>
         </div>
       </div>
-
-      <!-- Synopsis & Chapter Excerpt Preview -->
       <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-2">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">📖 Look Inside — Chapter 1 Excerpt</span>
           <span id="modal-pages" class="text-[10px] font-mono text-slate-500">464 Pages</span>
         </div>
-        <p id="modal-excerpt" class="text-xs text-slate-700 italic leading-relaxed font-serif">
-          "Sample chapter text preview..."
-        </p>
+        <p id="modal-excerpt" class="text-xs text-slate-700 italic leading-relaxed font-serif">"Sample chapter text preview..."</p>
       </div>
-
       <div class="grid grid-cols-2 gap-3 text-xs text-slate-600 border-y border-slate-100 py-3">
         <div><strong>Dewey Call No:</strong> <span id="modal-callno" class="font-mono text-slate-900 font-bold">000.00</span></div>
         <div><strong>Shelf Location:</strong> <span id="modal-shelf" class="text-slate-900 font-semibold">2nd Floor, Bay A</span></div>
         <div><strong>Status:</strong> <span id="modal-copies" class="font-bold text-emerald-700">0 available</span></div>
         <div><strong>Loan Period:</strong> 14 Days (+7d renewable)</div>
       </div>
-
       <div class="flex items-center justify-between gap-3 pt-1">
         <button id="btn-modal-wishlist" class="px-4 py-2.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition-all flex items-center gap-1.5">
           <span>❤️</span> <span id="modal-wishlist-label">Save to List</span>
         </button>
-
         <div class="flex items-center gap-2.5">
-          <button id="btn-modal-close-action" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition-colors">
-            Close
-          </button>
-          <button id="btn-modal-borrow-action" class="px-6 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold shadow-md transition-all">
-            Borrow This Book
-          </button>
+          <button id="btn-modal-close-action" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition-colors">Close</button>
+          <button id="btn-modal-borrow-action" class="px-6 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold shadow-md transition-all">Borrow This Book</button>
         </div>
       </div>
     </div>
@@ -793,32 +667,20 @@
   <!-- ================= 2. SAVED READING LIST / WISHLIST DRAWER MODAL ================= -->
   <div id="modal-wishlist" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-slate-200 relative max-h-[85vh] flex flex-col">
-      <button id="btn-close-wishlist" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">
-        ✕
-      </button>
-
+      <button id="btn-close-wishlist" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">✕</button>
       <div>
-        <span class="text-[10px] font-bold uppercase tracking-wider text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
-          Personal Bookmarks
-        </span>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">Personal Bookmarks</span>
         <h3 class="text-2xl font-serif-title font-bold text-slate-900 mt-1">Saved Reading List</h3>
         <p class="text-xs text-slate-500">Books you have bookmarked to read or borrow next</p>
       </div>
-
-      <div id="wishlist-items-container" class="space-y-3 overflow-y-auto pr-1 flex-grow">
-        <!-- Populated via JS -->
-      </div>
+      <div id="wishlist-items-container" class="space-y-3 overflow-y-auto pr-1 flex-grow"></div>
     </div>
   </div>
 
   <!-- ================= 3. DIGITAL LIBRARY ID CARD PASS MODAL ================= -->
   <div id="modal-idcard" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="bg-gradient-to-br from-slate-900 via-slate-950 to-amber-950 text-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-amber-500/30 relative overflow-hidden">
-      <button id="btn-close-idcard" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold">
-        ✕
-      </button>
-
-      <!-- Card Header -->
+      <button id="btn-close-idcard" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold">✕</button>
       <div class="flex items-center justify-between border-b border-white/15 pb-4">
         <div class="flex items-center gap-2.5">
           <span class="text-2xl">📚</span>
@@ -827,24 +689,16 @@
             <p class="text-[10px] text-slate-400 uppercase tracking-widest">Official Digital Patron Pass</p>
           </div>
         </div>
-        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-          ACTIVE
-        </span>
+        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">ACTIVE</span>
       </div>
-
-      <!-- Member Details -->
       <div class="flex items-center gap-4">
-        <div id="idcard-avatar" class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-2xl font-black text-slate-950 shadow-lg">
-          M
-        </div>
+        <div id="idcard-avatar" class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-2xl font-black text-slate-950 shadow-lg">M</div>
         <div class="space-y-1">
           <h3 id="idcard-name" class="text-xl font-bold text-white">Manoj</h3>
           <p id="idcard-plan" class="text-xs text-amber-300 font-semibold">Student Membership Tier</p>
           <p id="idcard-email" class="text-[11px] text-slate-400 font-mono">manoj@example.com</p>
         </div>
       </div>
-
-      <!-- Stats Grid -->
       <div class="grid grid-cols-3 gap-2.5 bg-white/5 p-3.5 rounded-2xl border border-white/10 text-center">
         <div>
           <p class="text-[10px] text-slate-400 uppercase">Member ID</p>
@@ -859,8 +713,6 @@
           <p class="text-sm font-bold text-emerald-400 mt-0.5">Rs. 0 Fine</p>
         </div>
       </div>
-
-      <!-- Simulated Barcode Strip -->
       <div class="bg-white p-3 rounded-2xl text-center space-y-1">
         <div class="h-8 w-full bg-[repeating-linear-gradient(90deg,#0f172a,#0f172a_2px,transparent_2px,transparent_5px,#0f172a_5px,#0f172a_9px,transparent_9px,transparent_11px)]"></div>
         <p id="idcard-barcode-text" class="text-[10px] font-mono text-slate-600 tracking-widest">*SHLF-2026-MEM-001*</p>
@@ -871,29 +723,21 @@
   <!-- ================= 4. LATE FEE ESTIMATOR MODAL ================= -->
   <div id="modal-fine-calc" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-slate-200 relative">
-      <button id="btn-close-fine-calc" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">
-        ✕
-      </button>
-
+      <button id="btn-close-fine-calc" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">✕</button>
       <div>
-        <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
-          Circulation Utility
-        </span>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">Circulation Utility</span>
         <h3 class="text-xl font-serif-title font-bold text-slate-900 mt-1">Overdue Fine Estimator</h3>
         <p class="text-xs text-slate-500">Calculate late return charges at Rs. 2.00 per book per overdue day</p>
       </div>
-
       <div class="space-y-4">
         <div>
           <label for="calc-books" class="block text-xs font-bold text-slate-700 uppercase mb-1">Number of Overdue Books: <span id="calc-books-val" class="text-amber-700">1</span></label>
           <input id="calc-books" type="range" min="1" max="8" value="1" class="w-full accent-amber-700 cursor-pointer">
         </div>
-
         <div>
           <label for="calc-days" class="block text-xs font-bold text-slate-700 uppercase mb-1">Days Past Due Date: <span id="calc-days-val" class="text-amber-700">5 Days</span></label>
           <input id="calc-days" type="range" min="0" max="60" value="5" class="w-full accent-amber-700 cursor-pointer">
         </div>
-
         <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 flex items-center justify-between">
           <div>
             <p class="text-xs font-bold text-amber-950">Estimated Late Fee</p>
@@ -908,15 +752,11 @@
   <!-- ================= 5. SUGGEST A BOOK ACQUISITION MODAL ================= -->
   <div id="modal-suggest" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-4 shadow-2xl border border-slate-200 relative">
-      <button id="btn-close-suggest" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">
-        ✕
-      </button>
-
+      <button id="btn-close-suggest" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">✕</button>
       <div>
         <h3 class="text-xl font-serif-title font-bold text-slate-900">Suggest a New Book</h3>
         <p class="text-xs text-slate-500 mt-0.5">Add a title directly to the Shelfmark Library catalogue</p>
       </div>
-
       <form id="form-suggest-book" class="space-y-3">
         <div>
           <label for="sug-title" class="block text-xs font-bold text-slate-700 uppercase mb-1">Book Title *</label>
@@ -941,10 +781,7 @@
             <input id="sug-copies" type="number" min="1" max="10" value="3" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none" required>
           </div>
         </div>
-
-        <button type="submit" class="w-full py-3 bg-amber-700 hover:bg-amber-800 text-white font-bold rounded-xl text-xs shadow-md mt-2 transition-all">
-          Add Book to Catalogue
-        </button>
+        <button type="submit" class="w-full py-3 bg-amber-700 hover:bg-amber-800 text-white font-bold rounded-xl text-xs shadow-md mt-2 transition-all">Add Book to Catalogue</button>
       </form>
     </div>
   </div>
@@ -952,15 +789,11 @@
   <!-- ================= 6. REGISTER NEW MEMBER MODAL ================= -->
   <div id="modal-register" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-4 shadow-2xl border border-slate-200 relative">
-      <button id="btn-close-reg-modal" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">
-        ✕
-      </button>
-
+      <button id="btn-close-reg-modal" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">✕</button>
       <div>
         <h3 class="text-xl font-serif-title font-bold text-slate-900">Register New Member</h3>
-        <p class="text-xs text-slate-500 mt-0.5">Creates member profile with immediate checkout readiness</p>
+        <p class="text-xs text-slate-500 mt-0.5">Creates member profile with password-protected sign-in</p>
       </div>
-
       <form id="form-register-modal" class="space-y-3">
         <div>
           <label for="modal-reg-name" class="block text-xs font-bold text-slate-700 uppercase mb-1">Full Name</label>
@@ -975,6 +808,10 @@
           <input id="modal-reg-phone" type="tel" placeholder="9876543210" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none" required>
         </div>
         <div>
+          <label for="modal-reg-password" class="block text-xs font-bold text-slate-700 uppercase mb-1">Password</label>
+          <input id="modal-reg-password" type="password" minlength="4" placeholder="Minimum 4 characters" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none" required>
+        </div>
+        <div>
           <label for="modal-reg-plan" class="block text-xs font-bold text-slate-700 uppercase mb-1">Membership Plan</label>
           <select id="modal-reg-plan" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none bg-white font-medium">
             <option value="Student">Student (3 books, 14 days)</option>
@@ -982,10 +819,7 @@
             <option value="Public">Public (2 books, 10 days)</option>
           </select>
         </div>
-
-        <button type="submit" class="w-full py-3 bg-amber-700 hover:bg-amber-800 text-white font-bold rounded-xl text-xs shadow-md mt-2 transition-all">
-          Submit & Switch to This Member
-        </button>
+        <button type="submit" class="w-full py-3 bg-amber-700 hover:bg-amber-800 text-white font-bold rounded-xl text-xs shadow-md mt-2 transition-all">Create Account &amp; Sign In</button>
       </form>
     </div>
   </div>
@@ -995,11 +829,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
       <div class="space-y-3">
         <h4 class="font-brand text-lg font-bold text-white tracking-wider">Shelfmark Library</h4>
-        <p class="leading-relaxed text-slate-400">
-          A modern digital and on-premises academic library platform offering seamless circulation, study space reservations, and curated scholarly archives.
-        </p>
+        <p class="leading-relaxed text-slate-400">A modern digital and on-premises academic library platform offering seamless circulation, study space reservations, and curated scholarly archives.</p>
       </div>
-
       <div>
         <h5 class="font-bold text-white uppercase tracking-wider mb-2 font-mono text-[11px]">Quick Navigation</h5>
         <ul class="space-y-1.5 text-[11px]">
@@ -1009,7 +840,6 @@
           <li><a href="#membership" class="hover:text-amber-400 transition-colors">Membership Tiers</a></li>
         </ul>
       </div>
-
       <div>
         <h5 class="font-bold text-white uppercase tracking-wider mb-2 font-mono text-[11px]">Library Services</h5>
         <ul class="space-y-1.5 text-[11px]">
@@ -1020,7 +850,6 @@
           <li>Instant Digital Patron ID Pass</li>
         </ul>
       </div>
-
       <div>
         <h5 class="font-bold text-white uppercase tracking-wider mb-2 font-mono text-[11px]">Central Reading Room</h5>
         <p class="text-slate-400 leading-relaxed">
@@ -1038,112 +867,15 @@
 
   <!-- ================= JAVASCRIPT SYSTEM ENGINE ================= -->
   <script>
-    // --- GLOBAL DATA STORE ---
     const INITIAL_BOOKS = [
-      {
-        id: 1,
-        title: 'Clean Code',
-        author: 'Robert C. Martin',
-        category: 'Computer Science',
-        callNo: '005.1 MAR',
-        copies: 3,
-        rating: 4.9,
-        pages: '464 Pages',
-        shelf: '2nd Floor, Bay A',
-        coverColor: 'bg-sky-950',
-        excerpt: 'Even bad code can function. But if code isn’t clean, it can bring a development organization to its knees. Every year, countless hours and significant resources are lost because of poorly written code.'
-      },
-      {
-        id: 2,
-        title: 'Introduction to Algorithms',
-        author: 'Thomas H. Cormen, et al.',
-        category: 'Computer Science',
-        callNo: '005.1 COR',
-        copies: 0,
-        rating: 4.8,
-        pages: '1312 Pages',
-        shelf: '2nd Floor, Bay B',
-        coverColor: 'bg-rose-950',
-        excerpt: 'Before there were computers, there were algorithms. But now that there are computers, there are even more algorithms, and algorithms lie at the heart of computing.'
-      },
-      {
-        id: 3,
-        title: 'Database System Concepts',
-        author: 'Abraham Silberschatz',
-        category: 'Computer Science',
-        callNo: '005.74 SIL',
-        copies: 5,
-        rating: 4.7,
-        pages: '1376 Pages',
-        shelf: '2nd Floor, Bay C',
-        coverColor: 'bg-teal-950',
-        excerpt: 'Database management has evolved from a specialized computer application to a central component of a modern computing environment, underpinning enterprise transactions worldwide.'
-      },
-      {
-        id: 4,
-        title: 'Wings of Fire',
-        author: 'A. P. J. Abdul Kalam',
-        category: 'History and Biography',
-        callNo: '920 KAL',
-        copies: 2,
-        rating: 5.0,
-        pages: '180 Pages',
-        shelf: '1st Floor, Biography Wing',
-        coverColor: 'bg-amber-900',
-        excerpt: 'I was born into a middle-class Tamil family in the island town of Rameswaram in the erstwhile Madras state. My father, Jainulabdeen, had neither much formal education nor much wealth.'
-      },
-      {
-        id: 5,
-        title: 'The Discovery of India',
-        author: 'Jawaharlal Nehru',
-        category: 'History and Biography',
-        callNo: '954 NEH',
-        copies: 0,
-        rating: 4.9,
-        pages: '656 Pages',
-        shelf: '1st Floor, History Wing',
-        coverColor: 'bg-purple-950',
-        excerpt: 'India was in my blood and there was much in her that instinctively thrilled me. And yet I approached her almost as an alien critic, full of dislike for the present as well as for many of the relics of the past.'
-      },
-      {
-        id: 6,
-        title: 'Head First Java',
-        author: 'Kathy Sierra & Bert Bates',
-        category: 'Computer Science',
-        callNo: '005.13 SIE',
-        copies: 4,
-        rating: 4.6,
-        pages: '720 Pages',
-        shelf: '2nd Floor, Bay A',
-        coverColor: 'bg-emerald-950',
-        excerpt: 'Learning a complex new language is no easy task especially when it’s an object-oriented computer programming language like Java. Your brain craves novelty and visual engagement.'
-      },
-      {
-        id: 7,
-        title: 'Artificial Intelligence: A Modern Approach',
-        author: 'Stuart Russell & Peter Norvig',
-        category: 'Science and Technology',
-        callNo: '006.3 RUS',
-        copies: 1,
-        rating: 4.9,
-        pages: '1152 Pages',
-        shelf: '3rd Floor, AI Lab Archive',
-        coverColor: 'bg-indigo-950',
-        excerpt: 'We call ourselves Homo sapiens—man the wise—because our intelligence is so important to us. For thousands of years, we have tried to understand how we think and act.'
-      },
-      {
-        id: 8,
-        title: 'Malgudi Days',
-        author: 'R. K. Narayan',
-        category: 'Literature',
-        callNo: '823 NAR',
-        copies: 6,
-        rating: 4.8,
-        pages: '264 Pages',
-        shelf: 'Ground Floor, Classics',
-        coverColor: 'bg-stone-900',
-        excerpt: 'Punctually at midday he opened his bag and spread out his professional equipment, which consisted of a dozen cowrie shells, a square piece of cloth with obscure mystic charts on it, a notebook, and a bundle of palmyra writing.'
-      }
+      { id: 1, title: 'Clean Code', author: 'Robert C. Martin', category: 'Computer Science', callNo: '005.1 MAR', copies: 3, rating: 4.9, pages: '464 Pages', shelf: '2nd Floor, Bay A', coverColor: 'bg-sky-950', excerpt: 'Even bad code can function. But if code isn’t clean, it can bring a development organization to its knees.' },
+      { id: 2, title: 'Introduction to Algorithms', author: 'Thomas H. Cormen, et al.', category: 'Computer Science', callNo: '005.1 COR', copies: 0, rating: 4.8, pages: '1312 Pages', shelf: '2nd Floor, Bay B', coverColor: 'bg-rose-950', excerpt: 'Before there were computers, there were algorithms. But now that there are computers, there are even more algorithms.' },
+      { id: 3, title: 'Database System Concepts', author: 'Abraham Silberschatz', category: 'Computer Science', callNo: '005.74 SIL', copies: 5, rating: 4.7, pages: '1376 Pages', shelf: '2nd Floor, Bay C', coverColor: 'bg-teal-950', excerpt: 'Database management has evolved from a specialized computer application to a central component of a modern computing environment.' },
+      { id: 4, title: 'Wings of Fire', author: 'A. P. J. Abdul Kalam', category: 'History and Biography', callNo: '920 KAL', copies: 2, rating: 5.0, pages: '180 Pages', shelf: '1st Floor, Biography Wing', coverColor: 'bg-amber-900', excerpt: 'I was born into a middle-class Tamil family in the island town of Rameswaram in the erstwhile Madras state.' },
+      { id: 5, title: 'The Discovery of India', author: 'Jawaharlal Nehru', category: 'History and Biography', callNo: '954 NEH', copies: 0, rating: 4.9, pages: '656 Pages', shelf: '1st Floor, History Wing', coverColor: 'bg-purple-950', excerpt: 'India was in my blood and there was much in her that instinctively thrilled me.' },
+      { id: 6, title: 'Head First Java', author: 'Kathy Sierra & Bert Bates', category: 'Computer Science', callNo: '005.13 SIE', copies: 4, rating: 4.6, pages: '720 Pages', shelf: '2nd Floor, Bay A', coverColor: 'bg-emerald-950', excerpt: 'Learning a complex new language is no easy task especially when it’s an object-oriented computer programming language like Java.' },
+      { id: 7, title: 'Artificial Intelligence: A Modern Approach', author: 'Stuart Russell & Peter Norvig', category: 'Science and Technology', callNo: '006.3 RUS', copies: 1, rating: 4.9, pages: '1152 Pages', shelf: '3rd Floor, AI Lab Archive', coverColor: 'bg-indigo-950', excerpt: 'We call ourselves Homo sapiens—man the wise—because our intelligence is so important to us.' },
+      { id: 8, title: 'Malgudi Days', author: 'R. K. Narayan', category: 'Literature', callNo: '823 NAR', copies: 6, rating: 4.8, pages: '264 Pages', shelf: 'Ground Floor, Classics', coverColor: 'bg-stone-900', excerpt: 'Punctually at midday he opened his bag and spread out his professional equipment.' }
     ];
 
     const INITIAL_PODS = [
@@ -1156,32 +888,33 @@
     let state = {
       books: JSON.parse(JSON.stringify(INITIAL_BOOKS)),
       members: [
-        { id: 1, name: 'Manoj', email: 'manoj@example.com', phone: '9000000001', plan: 'Student' },
-        { id: 2, name: 'Divya', email: 'divya@example.com', phone: '9000000002', plan: 'Student' }
+        { id: 1, name: 'Manoj', email: 'manoj@example.com', phone: '9000000001', password: '1234', plan: 'Student' },
+        { id: 2, name: 'Divya', email: 'divya@example.com', phone: '9000000002', password: '1234', plan: 'Student' }
       ],
       loans: [
         { id: 1, bookId: 2, memberId: 1, borrowedOn: '2026-11-04', dueDate: '2026-11-18', returnedOn: null, renewals: 0 }
       ],
-      wishlist: [1, 4], // Book IDs saved by user
-      waitlist: [],     // { bookId, memberId }
+      wishlist: [1, 4],
+      waitlist: [],
       studyPods: JSON.parse(JSON.stringify(INITIAL_PODS)),
-      activeMemberId: 1,
+      activeMemberId: null,
       searchQuery: '',
       selectedCategory: 'All categories',
       selectedSort: 'id',
       modalBookId: null
     };
 
-    // --- DOM REFERENCES ---
+    // DOM References
     const booksGrid = document.getElementById('books-grid');
     const loansListContainer = document.getElementById('loans-list-container');
     const emptyLoansState = document.getElementById('empty-loans-state');
+    const lockedLoansState = document.getElementById('locked-loans-state');
     const emptyCatalogueState = document.getElementById('empty-catalogue-state');
     const studyPodsGrid = document.getElementById('study-pods-grid');
     const inputSearch = document.getElementById('input-search-query');
     const selectCategory = document.getElementById('select-category');
     const selectSort = document.getElementById('select-sort');
-    const selectActiveMember = document.getElementById('select-active-member');
+    const navAuthArea = document.getElementById('nav-auth-area');
     const badgeLoansCount = document.getElementById('badge-loans-count');
     const badgeWishlistCount = document.getElementById('badge-wishlist-count');
     const activeMemberDisplay = document.getElementById('active-member-display');
@@ -1191,6 +924,7 @@
     const catalogueCountLabel = document.getElementById('catalogue-count-label');
 
     // Modals
+    const modalAuth = document.getElementById('modal-auth');
     const modalBookDetail = document.getElementById('modal-book-detail');
     const modalRegister = document.getElementById('modal-register');
     const modalWishlist = document.getElementById('modal-wishlist');
@@ -1198,7 +932,6 @@
     const modalFineCalc = document.getElementById('modal-fine-calc');
     const modalSuggest = document.getElementById('modal-suggest');
 
-    // --- HELPER: TOAST NOTIFICATIONS ---
     function showToast(message, type = 'success') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
@@ -1208,29 +941,70 @@
       }`;
       toast.innerHTML = `<span>${isError ? '⚠️' : '✅'}</span><span>${message}</span>`;
       container.appendChild(toast);
-
-      requestAnimationFrame(() => {
-        toast.classList.remove('translate-y-4', 'opacity-0');
-      });
-
+      requestAnimationFrame(() => toast.classList.remove('translate-y-4', 'opacity-0'));
       setTimeout(() => {
         toast.classList.add('translate-y-4', 'opacity-0');
         setTimeout(() => toast.remove(), 300);
       }, 3500);
     }
 
-    // --- RENDER FUNCTIONS ---
+    function openAuthModal() {
+      modalAuth.classList.remove('hidden');
+    }
+
+    function logoutUser() {
+      const currentMember = state.members.find(m => m.id === state.activeMemberId);
+      state.activeMemberId = null;
+      render();
+      showToast(`Signed out${currentMember ? ` ${currentMember.name}` : ''}.`);
+    }
+
+    function demoLogin(email, password) {
+      document.getElementById('login-email').value = email;
+      document.getElementById('login-password').value = password;
+      const member = state.members.find(m => m.email.toLowerCase() === email.toLowerCase() && m.password === password);
+      if (member) {
+        state.activeMemberId = member.id;
+        modalAuth.classList.add('hidden');
+        render();
+        showToast(`Signed in as ${member.name} (${member.plan} #${member.id})`);
+      }
+    }
+
     function render() {
+      renderNavAuth();
       renderCatalogue();
       renderLoans();
       renderStudyPods();
-      renderMemberSelect();
       updateMetrics();
+    }
+
+    function renderNavAuth() {
+      if (!state.activeMemberId) {
+        navAuthArea.innerHTML = `
+          <button onclick="openAuthModal()" class="bg-slate-950 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md transition-all">
+            Sign In
+          </button>
+        `;
+      } else {
+        const m = state.members.find(mem => mem.id === state.activeMemberId);
+        navAuthArea.innerHTML = `
+          <div class="flex items-center gap-2 bg-slate-950 text-white px-3 py-2 rounded-xl text-xs shadow-md border border-slate-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span class="font-bold">${m ? `${m.name} (${m.plan} #${m.id})` : 'Member'}</span>
+          </div>
+          <button onclick="logoutUser()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-2 rounded-xl text-xs font-bold transition-all">
+            Sign Out
+          </button>
+        `;
+      }
     }
 
     function updateMetrics() {
       const totalCopies = state.books.reduce((acc, b) => acc + b.copies, 0);
-      const memberLoans = state.loans.filter(l => l.memberId === state.activeMemberId && !l.returnedOn);
+      const memberLoans = state.activeMemberId
+        ? state.loans.filter(l => l.memberId === state.activeMemberId && !l.returnedOn)
+        : [];
 
       statTotalBooks.textContent = state.books.length;
       statAvailableCopies.textContent = totalCopies;
@@ -1238,16 +1012,10 @@
       badgeLoansCount.textContent = memberLoans.length;
       badgeWishlistCount.textContent = state.wishlist.length;
 
-      const currentMember = state.members.find(m => m.id === state.activeMemberId) || { name: 'Member', plan: 'Student' };
-      activeMemberDisplay.textContent = `${currentMember.name} (${currentMember.plan} #${currentMember.id})`;
-    }
-
-    function renderMemberSelect() {
-      selectActiveMember.innerHTML = state.members.map(m => `
-        <option value="${m.id}" ${m.id === state.activeMemberId ? 'selected' : ''}>
-          ${m.name} (${m.plan} #${m.id})
-        </option>
-      `).join('');
+      const currentMember = state.members.find(m => m.id === state.activeMemberId);
+      activeMemberDisplay.textContent = currentMember
+        ? `${currentMember.name} (${currentMember.plan} #${currentMember.id})`
+        : 'Not Signed In (Visitor Mode)';
     }
 
     function renderCatalogue() {
@@ -1258,16 +1026,10 @@
         return matchesQuery && matchesCat;
       });
 
-      // Sorting
-      if (state.selectedSort === 'title') {
-        filtered.sort((a, b) => a.title.localeCompare(b.title));
-      } else if (state.selectedSort === 'copies') {
-        filtered.sort((a, b) => b.copies - a.copies);
-      } else if (state.selectedSort === 'rating') {
-        filtered.sort((a, b) => (b.rating || 4.5) - (a.rating || 4.5));
-      } else {
-        filtered.sort((a, b) => a.id - b.id);
-      }
+      if (state.selectedSort === 'title') filtered.sort((a, b) => a.title.localeCompare(b.title));
+      else if (state.selectedSort === 'copies') filtered.sort((a, b) => b.copies - a.copies);
+      else if (state.selectedSort === 'rating') filtered.sort((a, b) => (b.rating || 4.5) - (a.rating || 4.5));
+      else filtered.sort((a, b) => a.id - b.id);
 
       catalogueCountLabel.textContent = `Showing ${filtered.length} book${filtered.length === 1 ? '' : 's'} for "${state.selectedCategory}"`;
 
@@ -1276,34 +1038,29 @@
         emptyCatalogueState.classList.remove('hidden');
         return;
       }
-
       emptyCatalogueState.classList.add('hidden');
 
-      const activeMemberLoans = state.loans.filter(l => l.memberId === state.activeMemberId && !l.returnedOn);
+      const activeMemberLoans = state.activeMemberId
+        ? state.loans.filter(l => l.memberId === state.activeMemberId && !l.returnedOn)
+        : [];
       const borrowedBookIds = new Set(activeMemberLoans.map(l => l.bookId));
 
       booksGrid.innerHTML = filtered.map(book => {
         const hasBorrowed = borrowedBookIds.has(book.id);
         const isAvailable = book.copies > 0;
         const isSaved = state.wishlist.includes(book.id);
-        const onWaitlist = state.waitlist.some(w => w.bookId === book.id && w.memberId === state.activeMemberId);
+        const onWaitlist = state.activeMemberId && state.waitlist.some(w => w.bookId === book.id && w.memberId === state.activeMemberId);
 
         return `
           <article class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
             <div>
-              <!-- 3D Book Cover Card -->
               <div class="h-48 ${book.coverColor} p-5 flex flex-col justify-between text-white relative overflow-hidden cursor-pointer book-card-cover" data-id="${book.id}">
                 <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 opacity-60"></div>
-
                 <div class="flex justify-between items-start">
-                  <span class="text-[10px] font-mono uppercase tracking-wider bg-black/40 backdrop-blur-md px-2.5 py-0.5 rounded-full text-amber-300 font-bold border border-white/10">
-                    ${book.category}
-                  </span>
-                  <div class="flex items-center gap-1.5">
-                    <button type="button" class="btn-toggle-wishlist w-7 h-7 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-xs hover:scale-110 transition-transform" data-id="${book.id}" title="Save to Reading List">
-                      ${isSaved ? '❤️' : '🤍'}
-                    </button>
-                  </div>
+                  <span class="text-[10px] font-mono uppercase tracking-wider bg-black/40 backdrop-blur-md px-2.5 py-0.5 rounded-full text-amber-300 font-bold border border-white/10">${book.category}</span>
+                  <button type="button" class="btn-toggle-wishlist w-7 h-7 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-xs hover:scale-110 transition-transform" data-id="${book.id}" title="Save to Reading List">
+                    ${isSaved ? '❤️' : '🤍'}
+                  </button>
                 </div>
                 <div>
                   <h3 class="font-serif-title font-bold text-lg text-white leading-snug drop-shadow-md">${book.title}</h3>
@@ -1311,17 +1068,13 @@
                 </div>
               </div>
 
-              <!-- Book Details -->
               <div class="p-5 space-y-2.5">
                 <div class="flex items-center justify-between text-xs">
                   <span class="font-mono text-slate-500 text-[11px] font-semibold">${book.callNo}</span>
                   <span class="text-amber-600 font-bold text-[11px]">★ ${book.rating || '4.8'}</span>
                 </div>
-
                 <div class="flex items-center justify-between pt-0.5">
-                  <button type="button" class="text-[11px] font-bold text-indigo-700 hover:text-indigo-900 underline book-card-cover" data-id="${book.id}">
-                    📖 Preview Inside
-                  </button>
+                  <button type="button" class="text-[11px] font-bold text-indigo-700 hover:text-indigo-900 underline book-card-cover" data-id="${book.id}">📖 Preview Inside</button>
                   ${
                     hasBorrowed
                       ? `<span class="px-2.5 py-0.5 rounded-full font-bold text-[10px] bg-amber-100 text-amber-950 border border-amber-300">Checked Out</span>`
@@ -1335,17 +1088,12 @@
               </div>
             </div>
 
-            <!-- Action Button -->
             <div class="p-5 pt-0">
               ${
                 hasBorrowed
-                  ? `<button class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold text-xs rounded-2xl transition-all btn-return-action" data-id="${book.id}">
-                      Return Book
-                    </button>`
+                  ? `<button class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold text-xs rounded-2xl transition-all btn-return-action" data-id="${book.id}">Return Book</button>`
                   : isAvailable
-                  ? `<button class="w-full py-2.5 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs rounded-2xl shadow-md transition-all btn-borrow-action" data-id="${book.id}">
-                      Borrow This Book
-                    </button>`
+                  ? `<button class="w-full py-2.5 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs rounded-2xl shadow-md transition-all btn-borrow-action" data-id="${book.id}">Borrow This Book</button>`
                   : `<button class="w-full py-2.5 ${onWaitlist ? 'bg-indigo-50 text-indigo-800 border border-indigo-200' : 'bg-slate-900 hover:bg-slate-800 text-white'} font-bold text-xs rounded-2xl transition-all btn-waitlist-action" data-id="${book.id}">
                       ${onWaitlist ? '✓ On Priority Waitlist (Leave)' : '🔔 Join Priority Waitlist'}
                     </button>`
@@ -1357,6 +1105,14 @@
     }
 
     function renderLoans() {
+      if (!state.activeMemberId) {
+        loansListContainer.innerHTML = '';
+        emptyLoansState.classList.add('hidden');
+        lockedLoansState.classList.remove('hidden');
+        return;
+      }
+
+      lockedLoansState.classList.add('hidden');
       const activeMemberLoans = state.loans.filter(l => l.memberId === state.activeMemberId && !l.returnedOn);
 
       if (activeMemberLoans.length === 0) {
@@ -1366,7 +1122,6 @@
       }
 
       emptyLoansState.classList.add('hidden');
-
       loansListContainer.innerHTML = activeMemberLoans.map(loan => {
         const book = state.books.find(b => b.id === loan.bookId) || { title: `Book #${loan.bookId}`, author: 'Unknown', callNo: '' };
         const renewalsLeft = Math.max(0, 2 - (loan.renewals || 0));
@@ -1387,7 +1142,6 @@
                 <span class="text-emerald-700 font-bold">Renewals Remaining: ${renewalsLeft}</span>
               </div>
             </div>
-
             <div class="flex items-center gap-2.5">
               <button class="px-4 py-2.5 ${renewalsLeft > 0 ? 'bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} font-bold text-xs rounded-2xl transition-all btn-renew-action whitespace-nowrap" data-loan-id="${loan.id}" ${renewalsLeft === 0 ? 'disabled' : ''}>
                 🔄 Renew (+7 Days)
@@ -1402,6 +1156,18 @@
     }
 
     function renderStudyPods() {
+      if (!state.activeMemberId) {
+        studyPodsGrid.innerHTML = `
+          <div class="col-span-full bg-white rounded-3xl p-8 border border-dashed border-slate-300 text-center shadow-sm">
+            <span class="text-4xl block mb-2">🔒</span>
+            <p class="font-bold text-slate-800 text-base">Sign In to Reserve Study Pods</p>
+            <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">Sign in with your patron account to book quiet carrels or collaborative rooms.</p>
+            <button onclick="openAuthModal()" class="mt-4 px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-sm">Sign In</button>
+          </div>
+        `;
+        return;
+      }
+
       studyPodsGrid.innerHTML = state.studyPods.map(pod => {
         const isMine = pod.reservedBy === state.activeMemberId;
         const isTaken = pod.reservedBy !== null && !isMine;
@@ -1421,14 +1187,9 @@
               <p class="text-xs text-slate-500">${pod.floor}</p>
               <p class="text-xs font-mono font-semibold text-indigo-700">🕒 ${pod.slot}</p>
             </div>
-
             <button
               class="w-full py-2.5 rounded-2xl text-xs font-bold transition-all btn-pod-action ${
-                isMine
-                  ? 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200'
-                  : isTaken
-                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                  : 'bg-slate-900 hover:bg-slate-800 text-white shadow-sm'
+                isMine ? 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200' : isTaken ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-slate-900 hover:bg-slate-800 text-white shadow-sm'
               }"
               data-pod-id="${pod.id}"
               ${isTaken ? 'disabled' : ''}
@@ -1443,56 +1204,42 @@
     function renderWishlistModal() {
       const container = document.getElementById('wishlist-items-container');
       const savedBooks = state.books.filter(b => state.wishlist.includes(b.id));
-
       if (savedBooks.length === 0) {
-        container.innerHTML = `
-          <div class="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-            <span class="text-3xl block mb-2">🤍</span>
-            <p class="text-sm font-bold text-slate-700">Your Reading List is empty</p>
-            <p class="text-xs text-slate-500 mt-1">Click the heart icon on any book cover to save titles for later.</p>
-          </div>
-        `;
+        container.innerHTML = `<div class="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200"><span class="text-3xl block mb-2">🤍</span><p class="text-sm font-bold text-slate-700">Your Reading List is empty</p></div>`;
         return;
       }
-
       container.innerHTML = savedBooks.map(book => `
         <div class="p-4 rounded-2xl border border-slate-200 flex items-center justify-between gap-3 bg-slate-50/60">
           <div>
             <h4 class="font-bold text-sm text-slate-900">${book.title}</h4>
             <p class="text-xs text-slate-500">${book.author} • <span class="font-mono">${book.callNo}</span></p>
-            <span class="text-[10px] font-bold ${book.copies > 0 ? 'text-emerald-700' : 'text-rose-700'}">
-              ${book.copies > 0 ? `${book.copies} copies available` : 'Currently out of stock'}
-            </span>
           </div>
           <div class="flex items-center gap-2">
-            ${
-              book.copies > 0
-                ? `<button class="px-3 py-1.5 bg-amber-700 hover:bg-amber-800 text-white rounded-xl text-xs font-bold btn-wishlist-borrow" data-id="${book.id}">Borrow</button>`
-                : ''
-            }
+            ${book.copies > 0 ? `<button class="px-3 py-1.5 bg-amber-700 hover:bg-amber-800 text-white rounded-xl text-xs font-bold btn-wishlist-borrow" data-id="${book.id}">Borrow</button>` : ''}
             <button class="p-1.5 text-slate-400 hover:text-rose-600 btn-wishlist-remove" data-id="${book.id}" title="Remove">🗑️</button>
           </div>
         </div>
       `).join('');
     }
 
-    // --- ACTIONS: BORROW, RETURN, RENEW, WAITLIST, WISHLIST, PODS ---
     function handleBorrow(bookId) {
+      if (!state.activeMemberId) {
+        showToast('Please sign in to borrow books.', 'error');
+        openAuthModal();
+        return;
+      }
       const book = state.books.find(b => b.id === bookId);
       if (!book || book.copies <= 0) {
         showToast('No copies available to borrow!', 'error');
         return;
       }
-
       const existing = state.loans.find(l => l.bookId === bookId && l.memberId === state.activeMemberId && !l.returnedOn);
       if (existing) {
         showToast('You already have an active loan for this book!', 'error');
         return;
       }
-
       book.copies -= 1;
-
-      const newLoan = {
+      state.loans.push({
         id: state.loans.length + 1,
         bookId: book.id,
         memberId: state.activeMemberId,
@@ -1500,47 +1247,50 @@
         dueDate: new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0],
         returnedOn: null,
         renewals: 0
-      };
-      state.loans.push(newLoan);
-
+      });
       render();
       showToast(`Borrowed "${book.title}"! Due in 14 days.`);
     }
 
     function handleReturn(bookId) {
+      if (!state.activeMemberId) {
+        showToast('Please sign in first.', 'error');
+        openAuthModal();
+        return;
+      }
       const book = state.books.find(b => b.id === bookId);
       const loan = state.loans.find(l => l.bookId === bookId && l.memberId === state.activeMemberId && !l.returnedOn);
-
       if (!loan) {
         showToast('Loan record not found.', 'error');
         return;
       }
-
       loan.returnedOn = new Date().toISOString().split('T')[0];
       if (book) book.copies += 1;
-
       render();
       showToast(`Returned "${book ? book.title : 'Book'}". Inventory updated!`);
     }
 
     function handleRenew(loanId) {
+      if (!state.activeMemberId) return openAuthModal();
       const loan = state.loans.find(l => l.id === loanId);
-      if (!loan) return;
-      if ((loan.renewals || 0) >= 2) {
+      if (!loan || (loan.renewals || 0) >= 2) {
         showToast('Maximum online renewals (2) reached for this loan.', 'error');
         return;
       }
-
       const currentDue = new Date(loan.dueDate);
       currentDue.setDate(currentDue.getDate() + 7);
       loan.dueDate = currentDue.toISOString().split('T')[0];
       loan.renewals = (loan.renewals || 0) + 1;
-
       render();
       showToast(`Loan renewed! New due date extended to ${loan.dueDate}.`);
     }
 
     function toggleWaitlist(bookId) {
+      if (!state.activeMemberId) {
+        showToast('Please sign in to join the waitlist.', 'error');
+        openAuthModal();
+        return;
+      }
       const book = state.books.find(b => b.id === bookId);
       const idx = state.waitlist.findIndex(w => w.bookId === bookId && w.memberId === state.activeMemberId);
       if (idx >= 0) {
@@ -1548,7 +1298,7 @@
         showToast(`Removed from waitlist for "${book.title}".`);
       } else {
         state.waitlist.push({ bookId, memberId: state.activeMemberId });
-        showToast(`Joined Priority Hold Queue #1 for "${book.title}"!`);
+        showToast(`Joined Priority Hold Queue for "${book.title}"!`);
       }
       render();
     }
@@ -1568,9 +1318,13 @@
     }
 
     function togglePodReservation(podId) {
+      if (!state.activeMemberId) {
+        showToast('Please sign in to reserve a study pod.', 'error');
+        openAuthModal();
+        return;
+      }
       const pod = state.studyPods.find(p => p.id === podId);
       if (!pod) return;
-
       if (pod.reservedBy === state.activeMemberId) {
         pod.reservedBy = null;
         showToast(`Cancelled reservation for ${pod.name}.`);
@@ -1581,21 +1335,27 @@
       renderStudyPods();
     }
 
-    // --- EVENT LISTENERS ---
-    inputSearch.addEventListener('input', (e) => {
-      state.searchQuery = e.target.value;
-      renderCatalogue();
+    // Event Listeners
+    document.getElementById('btn-close-auth').addEventListener('click', () => modalAuth.classList.add('hidden'));
+    document.getElementById('form-login').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      const password = document.getElementById('login-password').value;
+      const member = state.members.find(m => m.email.toLowerCase() === email && m.password === password);
+      if (!member) {
+        showToast('Invalid email or password.', 'error');
+        return;
+      }
+      state.activeMemberId = member.id;
+      modalAuth.classList.add('hidden');
+      render();
+      showToast(`Welcome back, ${member.name}!`);
+      e.target.reset();
     });
 
-    selectCategory.addEventListener('change', (e) => {
-      state.selectedCategory = e.target.value;
-      renderCatalogue();
-    });
-
-    selectSort.addEventListener('change', (e) => {
-      state.selectedSort = e.target.value;
-      renderCatalogue();
-    });
+    inputSearch.addEventListener('input', (e) => { state.searchQuery = e.target.value; renderCatalogue(); });
+    selectCategory.addEventListener('change', (e) => { state.selectedCategory = e.target.value; renderCatalogue(); });
+    selectSort.addEventListener('change', (e) => { state.selectedSort = e.target.value; renderCatalogue(); });
 
     document.querySelectorAll('.chip-filter').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1618,93 +1378,52 @@
       renderCatalogue();
     });
 
-    selectActiveMember.addEventListener('change', (e) => {
-      state.activeMemberId = Number(e.target.value);
-      render();
-      const currentMember = state.members.find(m => m.id === state.activeMemberId);
-      showToast(`Active session switched to ${currentMember.name}`);
-    });
-
     document.querySelectorAll('.book-spine').forEach(spine => {
-      spine.addEventListener('click', () => {
-        const id = Number(spine.getAttribute('data-book-id'));
-        openBookModal(id);
-      });
+      spine.addEventListener('click', () => openBookModal(Number(spine.getAttribute('data-book-id'))));
     });
 
     booksGrid.addEventListener('click', (e) => {
       const wishBtn = e.target.closest('.btn-toggle-wishlist');
-      if (wishBtn) {
-        e.stopPropagation();
-        toggleWishlist(Number(wishBtn.getAttribute('data-id')));
-        return;
-      }
-
+      if (wishBtn) { e.stopPropagation(); toggleWishlist(Number(wishBtn.getAttribute('data-id'))); return; }
       const borrowBtn = e.target.closest('.btn-borrow-action');
-      if (borrowBtn) {
-        handleBorrow(Number(borrowBtn.getAttribute('data-id')));
-        return;
-      }
-
+      if (borrowBtn) { handleBorrow(Number(borrowBtn.getAttribute('data-id'))); return; }
       const returnBtn = e.target.closest('.btn-return-action');
-      if (returnBtn) {
-        handleReturn(Number(returnBtn.getAttribute('data-id')));
-        return;
-      }
-
+      if (returnBtn) { handleReturn(Number(returnBtn.getAttribute('data-id'))); return; }
       const waitlistBtn = e.target.closest('.btn-waitlist-action');
-      if (waitlistBtn) {
-        toggleWaitlist(Number(waitlistBtn.getAttribute('data-id')));
-        return;
-      }
-
+      if (waitlistBtn) { toggleWaitlist(Number(waitlistBtn.getAttribute('data-id'))); return; }
       const cover = e.target.closest('.book-card-cover');
-      if (cover) {
-        openBookModal(Number(cover.getAttribute('data-id')));
-      }
+      if (cover) openBookModal(Number(cover.getAttribute('data-id')));
     });
 
     loansListContainer.addEventListener('click', (e) => {
       const returnBtn = e.target.closest('.btn-return-action');
-      if (returnBtn) {
-        handleReturn(Number(returnBtn.getAttribute('data-id')));
-        return;
-      }
-
+      if (returnBtn) { handleReturn(Number(returnBtn.getAttribute('data-id'))); return; }
       const renewBtn = e.target.closest('.btn-renew-action');
-      if (renewBtn) {
-        handleRenew(Number(renewBtn.getAttribute('data-loan-id')));
-      }
+      if (renewBtn) handleRenew(Number(renewBtn.getAttribute('data-loan-id')));
     });
 
     studyPodsGrid.addEventListener('click', (e) => {
       const podBtn = e.target.closest('.btn-pod-action');
-      if (podBtn) {
-        togglePodReservation(Number(podBtn.getAttribute('data-pod-id')));
-      }
+      if (podBtn) togglePodReservation(Number(podBtn.getAttribute('data-pod-id')));
     });
 
-    // --- MODAL LOGIC: BOOK PREVIEW ---
     function openBookModal(bookId) {
       const book = state.books.find(b => b.id === bookId);
       if (!book) return;
       state.modalBookId = bookId;
-
       document.getElementById('modal-title').textContent = book.title;
       document.getElementById('modal-author').textContent = `By ${book.author}`;
       document.getElementById('modal-category').textContent = book.category;
       document.getElementById('modal-rating').textContent = `★ ${book.rating || '4.8'}`;
       document.getElementById('modal-pages').textContent = book.pages || '380 Pages';
       document.getElementById('modal-shelf').textContent = book.shelf || '2nd Floor, Reading Wing';
-      document.getElementById('modal-excerpt').textContent = `"${book.excerpt || 'A foundational text in the Shelfmark Library curated academic collection.'}"`;
+      document.getElementById('modal-excerpt').textContent = `"${book.excerpt}"`;
       document.getElementById('modal-callno').textContent = book.callNo;
       document.getElementById('modal-copies').textContent = `${book.copies} available`;
-
-      const isSaved = state.wishlist.includes(bookId);
-      document.getElementById('modal-wishlist-label').textContent = isSaved ? 'Saved in List' : 'Save to List';
+      document.getElementById('modal-wishlist-label').textContent = state.wishlist.includes(bookId) ? 'Saved in List' : 'Save to List';
 
       const borrowBtn = document.getElementById('btn-modal-borrow-action');
-      const hasBorrowed = state.loans.some(l => l.bookId === bookId && l.memberId === state.activeMemberId && !l.returnedOn);
+      const hasBorrowed = state.activeMemberId && state.loans.some(l => l.bookId === bookId && l.memberId === state.activeMemberId && !l.returnedOn);
 
       if (hasBorrowed) {
         borrowBtn.textContent = 'Already Borrowed';
@@ -1719,58 +1438,43 @@
         borrowBtn.disabled = false;
         borrowBtn.className = 'px-6 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold shadow-md';
       }
-
       modalBookDetail.classList.remove('hidden');
     }
 
     document.getElementById('btn-close-modal').addEventListener('click', () => modalBookDetail.classList.add('hidden'));
     document.getElementById('btn-modal-close-action').addEventListener('click', () => modalBookDetail.classList.add('hidden'));
-
     document.getElementById('btn-modal-wishlist').addEventListener('click', () => {
       if (state.modalBookId) {
         toggleWishlist(state.modalBookId);
-        const isSaved = state.wishlist.includes(state.modalBookId);
-        document.getElementById('modal-wishlist-label').textContent = isSaved ? 'Saved in List' : 'Save to List';
+        document.getElementById('modal-wishlist-label').textContent = state.wishlist.includes(state.modalBookId) ? 'Saved in List' : 'Save to List';
       }
     });
-
     document.getElementById('btn-modal-borrow-action').addEventListener('click', () => {
       if (!state.modalBookId) return;
       const book = state.books.find(b => b.id === state.modalBookId);
-      if (book && book.copies > 0) {
-        handleBorrow(state.modalBookId);
-      } else {
-        toggleWaitlist(state.modalBookId);
-      }
+      if (book && book.copies > 0) handleBorrow(state.modalBookId);
+      else toggleWaitlist(state.modalBookId);
       modalBookDetail.classList.add('hidden');
     });
 
-    // --- WISHLIST MODAL ---
-    document.getElementById('btn-open-wishlist').addEventListener('click', () => {
-      renderWishlistModal();
-      modalWishlist.classList.remove('hidden');
-    });
+    document.getElementById('btn-open-wishlist').addEventListener('click', () => { renderWishlistModal(); modalWishlist.classList.remove('hidden'); });
     document.getElementById('btn-close-wishlist').addEventListener('click', () => modalWishlist.classList.add('hidden'));
-
     document.getElementById('wishlist-items-container').addEventListener('click', (e) => {
       const borrowBtn = e.target.closest('.btn-wishlist-borrow');
-      if (borrowBtn) {
-        handleBorrow(Number(borrowBtn.getAttribute('data-id')));
-        renderWishlistModal();
-        return;
-      }
+      if (borrowBtn) { handleBorrow(Number(borrowBtn.getAttribute('data-id'))); renderWishlistModal(); return; }
       const removeBtn = e.target.closest('.btn-wishlist-remove');
-      if (removeBtn) {
-        toggleWishlist(Number(removeBtn.getAttribute('data-id')));
-      }
+      if (removeBtn) toggleWishlist(Number(removeBtn.getAttribute('data-id')));
     });
 
-    // --- DIGITAL LIBRARY ID CARD MODAL ---
     document.getElementById('btn-open-idcard').addEventListener('click', () => {
-      const m = state.members.find(mem => mem.id === state.activeMemberId) || state.members[0];
+      if (!state.activeMemberId) {
+        showToast('Please sign in to view your Digital ID Pass.', 'error');
+        openAuthModal();
+        return;
+      }
+      const m = state.members.find(mem => mem.id === state.activeMemberId);
       const activeLoans = state.loans.filter(l => l.memberId === m.id && !l.returnedOn).length;
       const maxLoans = m.plan === 'Faculty' ? 8 : m.plan === 'Public' ? 2 : 3;
-
       document.getElementById('idcard-avatar').textContent = m.name.charAt(0).toUpperCase();
       document.getElementById('idcard-name').textContent = m.name;
       document.getElementById('idcard-plan').textContent = `${m.plan} Membership Tier`;
@@ -1778,12 +1482,10 @@
       document.getElementById('idcard-number').textContent = `LIB-2026-00${m.id}`;
       document.getElementById('idcard-loans').textContent = `${activeLoans} / ${maxLoans}`;
       document.getElementById('idcard-barcode-text').textContent = `*SHLF-2026-MEM-00${m.id}*`;
-
       modalIdCard.classList.remove('hidden');
     });
     document.getElementById('btn-close-idcard').addEventListener('click', () => modalIdCard.classList.add('hidden'));
 
-    // --- LATE FEE ESTIMATOR MODAL ---
     const calcBooks = document.getElementById('calc-books');
     const calcDays = document.getElementById('calc-days');
     function updateFineCalculator() {
@@ -1793,93 +1495,74 @@
       document.getElementById('calc-books-val').textContent = b;
       document.getElementById('calc-days-val').textContent = `${d} Day${d === 1 ? '' : 's'}`;
       document.getElementById('calc-total-fine').textContent = `Rs. ${total}.00`;
-      const note = document.getElementById('calc-status-note');
-      if (total > 100) {
-        note.textContent = '⚠️ Exceeds Rs. 100 limit (borrowing paused until settled)';
-        note.className = 'text-[11px] text-rose-700 font-bold';
-      } else {
-        note.textContent = '✓ Account remains in good borrowing standing';
-        note.className = 'text-[11px] text-amber-800';
-      }
     }
     calcBooks.addEventListener('input', updateFineCalculator);
     calcDays.addEventListener('input', updateFineCalculator);
-
-    document.getElementById('btn-open-fine-calc').addEventListener('click', () => {
-      updateFineCalculator();
-      modalFineCalc.classList.remove('hidden');
-    });
+    document.getElementById('btn-open-fine-calc').addEventListener('click', () => { updateFineCalculator(); modalFineCalc.classList.remove('hidden'); });
     document.getElementById('btn-close-fine-calc').addEventListener('click', () => modalFineCalc.classList.add('hidden'));
 
-    // --- SUGGEST A BOOK MODAL ---
     document.getElementById('btn-open-suggest-modal').addEventListener('click', () => modalSuggest.classList.remove('hidden'));
     document.getElementById('btn-close-suggest').addEventListener('click', () => modalSuggest.classList.add('hidden'));
-
     document.getElementById('form-suggest-book').addEventListener('submit', (e) => {
       e.preventDefault();
       const title = document.getElementById('sug-title').value.trim();
       const author = document.getElementById('sug-author').value.trim();
       const category = document.getElementById('sug-category').value;
       const copies = Number(document.getElementById('sug-copies').value) || 2;
-
-      const newBook = {
-        id: state.books.length + 1,
-        title,
-        author,
-        category,
+      state.books.push({
+        id: state.books.length + 1, title, author, category,
         callNo: `005.${state.books.length + 1} ${author.slice(0, 3).toUpperCase()}`,
-        copies,
-        rating: 5.0,
-        pages: '350 Pages',
-        shelf: 'New Arrivals Shelf',
-        coverColor: 'bg-slate-900',
-        excerpt: `Newly acquired volume "${title}" by ${author}, added to the Shelfmark Library collection by patron recommendation.`
-      };
-      state.books.push(newBook);
+        copies, rating: 5.0, pages: '350 Pages', shelf: 'New Arrivals Shelf', coverColor: 'bg-slate-900',
+        excerpt: `Newly acquired volume "${title}" by ${author}.`
+      });
       render();
       modalSuggest.classList.add('hidden');
       showToast(`Added "${title}" to the Library Catalogue!`);
       e.target.reset();
     });
 
-    // --- REGISTER NEW MEMBER MODAL & INLINE FORM ---
     document.getElementById('btn-open-register-modal').addEventListener('click', () => modalRegister.classList.remove('hidden'));
     document.getElementById('btn-close-reg-modal').addEventListener('click', () => modalRegister.classList.add('hidden'));
 
     document.getElementById('form-register-modal').addEventListener('submit', (e) => {
       e.preventDefault();
       const name = document.getElementById('modal-reg-name').value.trim();
-      const email = document.getElementById('modal-reg-email').value.trim();
+      const email = document.getElementById('modal-reg-email').value.trim().toLowerCase();
       const phone = document.getElementById('modal-reg-phone').value.trim();
+      const password = document.getElementById('modal-reg-password').value;
       const plan = document.getElementById('modal-reg-plan').value;
-
-      const newMember = { id: state.members.length + 1, name, email, phone, plan };
+      if (state.members.some(m => m.email.toLowerCase() === email)) {
+        showToast('An account with this email already exists.', 'error');
+        return;
+      }
+      const newMember = { id: state.members.length + 1, name, email, phone, password, plan };
       state.members.push(newMember);
       state.activeMemberId = newMember.id;
-
       render();
       modalRegister.classList.add('hidden');
-      showToast(`Member created! Switched session to ${name}`);
+      showToast(`Account created & signed in as ${name}!`);
       e.target.reset();
     });
 
     document.getElementById('form-register-inline').addEventListener('submit', (e) => {
       e.preventDefault();
       const name = document.getElementById('reg-name').value.trim();
-      const email = document.getElementById('reg-email').value.trim();
+      const email = document.getElementById('reg-email').value.trim().toLowerCase();
       const phone = document.getElementById('reg-phone').value.trim();
+      const password = document.getElementById('reg-password').value;
       const plan = document.getElementById('reg-plan').value;
-
-      const newMember = { id: state.members.length + 1, name, email, phone, plan };
+      if (state.members.some(m => m.email.toLowerCase() === email)) {
+        showToast('An account with this email already exists.', 'error');
+        return;
+      }
+      const newMember = { id: state.members.length + 1, name, email, phone, password, plan };
       state.members.push(newMember);
       state.activeMemberId = newMember.id;
-
       render();
-      showToast(`Welcome ${name}! Membership #${newMember.id} activated.`);
+      showToast(`Welcome ${name}! Account #${newMember.id} created & signed in.`);
       e.target.reset();
     });
 
-    // --- INITIAL BOOTSTRAP ---
     render();
   </script>
 </body>
